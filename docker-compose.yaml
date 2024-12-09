@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      args:
+        PORT: ${PORT}
+        OPENAI_API_KEY: ${OPENAI_API_KEY}
+        HOST: ${HOST}
+    container_name: "devops-ai"
+    ports:
+      - "${PORT}:${PORT}"
+    env_file:
+      - .env
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

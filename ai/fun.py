@@ -1,12 +1,12 @@
 from openai import OpenAI
 from dataclasses import dataclass
-from core.config import ConfigEnvironment
+from core.config import Config
 
 
 @dataclass
 class RoastAgent:
 
-    client = OpenAI(api_key=ConfigEnvironment.OPENAI_API_KEY)
+    client = OpenAI(api_key=Config.OPENAI_API_KEY)
 
     def roast_me(self, user_input: str) -> str:
         response = self.client.chat.completions.create(
