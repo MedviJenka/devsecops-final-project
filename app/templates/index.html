@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoastBot with DevOps Jokes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            display: inline-block;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>RoastBot: DevOps Edition</h1>
+    <form action="/chat" method="POST">
+        <input type="text" name="user_input" placeholder="Enter something roast-worthy" required>
+        <button type="submit">Roast Me</button>
+    </form>
+    {% if response %}
+        <div class="response">
+            <strong>AI:</strong>
+            <p>{{ response }}</p>
+        </div>
+    {% endif %}
+</body>
+</html>
