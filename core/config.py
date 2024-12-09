@@ -7,6 +7,7 @@ load_dotenv()
 
 class Config:
     OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-    PORT = os.getenv('PORT')
+    AI_PORT = os.getenv('AI_PORT')
+    APP_PORT = os.getenv('APP_PORT')
     HOST = os.getenv('HOST')
     DEBUG = True

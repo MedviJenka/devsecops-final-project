@@ -1,7 +1,7 @@
-from ai.fun import RoastAgent
+from ai_engine.ai import RoastAgent
 from flask import Flask, render_template, request
-
 from core.config import Config
+
 
 app = Flask(__name__)
 
@@ -27,4 +27,4 @@ def chat():
 
 
 if __name__ == '__main__':
-    app.run(host=Config.HOST, port=Config.PORT, debug=Config.DEBUG)
+    app.run(host=Config.HOST, port=Config.APP_PORT, debug=Config.DEBUG)

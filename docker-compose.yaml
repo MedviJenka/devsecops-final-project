@@ -1,15 +1,31 @@
 version: '3.8'
 services:
+
+  ai-server:
+    build:
+      context: .
+      dockerfile: /ai_engine/Dockerfile
+      args:
+        AI_PORT: ${AI_PORT}
+        OPENAI_API_KEY: ${OPENAI_API_KEY}
+        HOST: ${HOST}
+    container_name: "ai-server"
+    ports:
+      - "${AI_PORT}:${AI_PORT}"
+    env_file:
+      - .env
+    networks:
+      - my-network
+
   app:
     build:
       context: .
       args:
-        PORT: ${PORT}
-        OPENAI_API_KEY: ${OPENAI_API_KEY}
+        APP_PORT: ${APP_PORT}
         HOST: ${HOST}
-    container_name: "devops-ai"
+    container_name: "app-server"
     ports:
-      - "${PORT}:${PORT}"
+      - "${APP_PORT}:${APP_PORT}"
     env_file:
       - .env
     networks:
