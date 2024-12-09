@@ -1,10 +1,11 @@
 from openai import OpenAI
-from dataclasses import dataclass
 from core.config import Config
+from dataclasses import dataclass
 
 
 @dataclass
 class RoastAgent:
+
     client = OpenAI(api_key=Config.OPENAI_API_KEY)
 
     def roast_me(self, user_input: str) -> str:

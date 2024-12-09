@@ -9,7 +9,7 @@ load_dotenv()
 class RoastRequest:
 
     def __init__(self) -> None:
-        self.url = f"http://127.0.0.1:{Config.AI_PORT}/roast"
+        self.url = f"http://192.168.1.100:{Config.AI_PORT}/roast"
 
     def request_handler(self, input_text: str):
         headers = {"Content-Type": "application/json"}
@@ -17,28 +17,24 @@ class RoastRequest:
 
         try:
             response = requests.post(self.url, json=payload, headers=headers)
-            response.raise_for_status()  # Raise an error for HTTP codes 4xx/5xx
+            response.raise_for_status()
             return response.json()
 
         except requests.exceptions.RequestException as e:
             return {"error": str(e)}
 
     def send_roast_request(self, user_input: str) -> str:
-        """
-        Sends a roast request and extracts a clean roast text.
-
-        Args:
-            user_input (str): The user's input.
-
-        Returns:
-            str: A clean roast message or an error message if the request fails.
-        """
         response = self.request_handler(user_input)
-
-        # Extract the roast if the response is valid, otherwise return the error
         if "roast" in response:
-            return response["roast"].strip()  # Clean and return the roast text
+            return response["roast"].strip()
         elif "error" in response:
             return f"Error: {response['error']}"
         else:
             return "Unexpected response format"
+
+    def health_check(self) -> int:
+        try:
+            response = requests.get(self.url)
+            return response.status_code
+        except requests.exceptions.RequestException as e:
+            raise Exception(f"Health check failed: {str(e)}")

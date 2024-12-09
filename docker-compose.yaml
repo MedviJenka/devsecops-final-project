@@ -15,11 +15,13 @@ services:
     env_file:
       - .env
     networks:
-      - my-network
+      my-network:
+        ipv4_address: 192.168.1.100
 
   app:
     build:
       context: .
+      dockerfile: /app/Dockerfile
       args:
         APP_PORT: ${APP_PORT}
         HOST: ${HOST}
@@ -29,8 +31,13 @@ services:
     env_file:
       - .env
     networks:
-      - my-network
+      my-network:
+        ipv4_address: 192.168.1.101
 
 networks:
   my-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+
