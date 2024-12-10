@@ -11,7 +11,7 @@ services:
         HOST: ${HOST}
     container_name: "ai-server"
     ports:
-      - "${AI_PORT}:${AI_PORT}"
+      - ${AI_PORT}:${AI_PORT}
     env_file:
       - .env
     networks:
@@ -27,7 +27,7 @@ services:
         HOST: ${HOST}
     container_name: "app-server"
     ports:
-      - "${APP_PORT}:${APP_PORT}"
+      - ${APP_PORT}:${APP_PORT}
     env_file:
       - .env
     networks:
@@ -45,10 +45,25 @@ services:
       my-network:
         ipv4_address: 192.168.1.102
 
+  jenkins:
+    image: jenkins/jenkins:latest
+    privileged: true
+    user: root
+    ports:
+      - ${JENKINS_PORT}:${JENKINS_PORT}
+    env_file:
+      - .env
+    container_name: jenkins
+    volumes:
+      - "/home/${myname}/jenkins_compose/jenkins_configuration:/var/jenkins_home"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      my-network:
+        ipv4_address: 192.168.1.103
+
 networks:
   my-network:
     driver: bridge
     ipam:
       config:
         - subnet: 192.168.1.0/24
-

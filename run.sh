@@ -10,3 +10,5 @@ pip3 -m venv ./venv
 source venv/bin/activate
 docker-compose build
 docker-compose up -d
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+
