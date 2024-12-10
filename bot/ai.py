@@ -1,7 +1,7 @@
 from openai import OpenAI
 from core.config import Config
 from dataclasses import dataclass
-from ai_engine.prompts import PROMPT
+from bot.prompts import PROMPT
 
 
 @dataclass

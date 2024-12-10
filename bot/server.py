@@ -1,5 +1,5 @@
 from core.config import Config
-from ai_engine.ai import RoastAgent
+from bot.ai import RoastAgent
 from flask import Flask, request, jsonify
 
 

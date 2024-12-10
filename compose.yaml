@@ -4,7 +4,7 @@ services:
   ai-server:
     build:
       context: .
-      dockerfile: /ai_engine/Dockerfile
+      dockerfile: /bot/Dockerfile
       args:
         AI_PORT: ${AI_PORT}
         OPENAI_API_KEY: ${OPENAI_API_KEY}
@@ -17,8 +17,9 @@ services:
     networks:
       my-network:
         ipv4_address: 192.168.1.100
+    restart: on-failure
 
-  app:
+  app-server:
     build:
       context: .
       dockerfile: /app/Dockerfile
@@ -33,6 +34,7 @@ services:
     networks:
       my-network:
         ipv4_address: 192.168.1.101
+    restart: on-failure
 
   tests:
     build:
@@ -44,6 +46,9 @@ services:
     networks:
       my-network:
         ipv4_address: 192.168.1.102
+    volumes:
+      - ./test_logs:/tests/logs
+
 
   jenkins:
     image: jenkins/jenkins:latest

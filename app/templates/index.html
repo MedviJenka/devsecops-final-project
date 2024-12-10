@@ -5,25 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RoastBot with DevOps Jokes</title>
     <style>
+        :root {
+            --background-color: white;
+            --text-color: black;
+            --response-bg-color: #f9f9f9;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background-color: #121212;
+                --text-color: #f1f1f1;
+                --response-bg-color: #1e1e1e;
+            }
+        }
+
         body {
+            background-color: var(--background-color);
+            color: var(--text-color);
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
+            transition: background-color 0.3s, color 0.3s;
         }
+
         .response {
             margin-top: 20px;
             padding: 10px;
-            background-color: #f9f9f9;
+            background-color: var(--response-bg-color);
             border-radius: 5px;
             display: inline-block;
             text-align: left;
         }
+
+        input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: var(--text-color);
+            color: var(--background-color);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <h1>RoastBot: DevOps Edition</h1>
+    <h1>Roast Bot</h1>
+    <h4>DevSecOps Edition</h4>
+    <img src="/app/src/images/roasted.gif" alt="roasted.gif"/>
     <form action="/chat" method="POST">
-        <input type="text" name="user_input" placeholder="Enter something roast-worthy" required>
+        <input type="text" name="user_input" placeholder="Roast Me..." required>
         <button type="submit">Roast Me</button>
     </form>
     {% if response %}
