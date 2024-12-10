@@ -1,6 +1,7 @@
 from openai import OpenAI
 from core.config import Config
 from dataclasses import dataclass
+from ai_engine.prompts import PROMPT
 
 
 @dataclass
@@ -11,7 +12,7 @@ class RoastAgent:
     def roast_me(self, user_input: str) -> str:
         response = self.client.chat.completions.create(
             messages=[
-                {"role": "system", "content": "You are a sarcastic AI who roasts the user and tells DevOps jokes. Be mean and funny!"},
+                {"role": "system", "content": PROMPT},
                 {"role": "user", "content": user_input}
             ],
             model="gpt-4o",
