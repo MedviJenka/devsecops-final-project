@@ -11,7 +11,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out the repository...'
-                checkout scm
+                git branch: 'main', url: 'https://github.com/MedviJenka/roast-bot.git'
             }
         }
 
@@ -24,55 +24,6 @@ pipeline {
                     """
                 }
             }
-        }
-
-        stage('Run Tests') {
-            steps {
-                echo 'Running tests inside the Docker containers...'
-                script {
-                    sh """
-                    docker-compose -f ${DOCKER_COMPOSE_FILE} up -d
-                    docker exec roast-bot-app pytest tests/ # Replace with your test command
-                    docker-compose -f ${DOCKER_COMPOSE_FILE} down
-                    """
-                }
-            }
-        }
-
-        stage('Push Docker Image') {
-            when {
-                branch 'main'
-            }
-        }
-
-        stage('Deploy') {
-            when {
-                branch 'main' // Only deploy from the main branch
-            }
-            steps {
-                echo 'Deploying the application...'
-                script {
-                    sh """
-                    docker-compose -f ${DOCKER_COMPOSE_FILE} pull
-                    docker-compose -f ${DOCKER_COMPOSE_FILE} up -d
-                    """
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            echo 'Cleaning up resources...'
-            script {
-                sh 'docker-compose -f ${DOCKER_COMPOSE_FILE} down --volumes --remove-orphans'
-            }
-        }
-        success {
-            echo 'Build completed successfully!'
-        }
-        failure {
-            echo 'Build failed!'
         }
     }
 }
