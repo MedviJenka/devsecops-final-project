@@ -1,6 +1,0 @@
-/.env
-/.venv
-/.idea
-/venv/
-/core/__pycache__/
-/app/__pycache__/
