@@ -15,15 +15,16 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                echo 'Building the Docker image...'
-                script {
-                    sh """
-                    docker-compose up --d --build
-                    """
-                }
-            }
-        }
+//         stage('Build Docker Image') {
+//             steps {
+//                 echo 'Building the Docker image...'
+//                 script {
+//                     sh """
+//                     docker-compose up --d --build
+//                     """
+//                 }
+//             }
+//         }
+
     }
 }
