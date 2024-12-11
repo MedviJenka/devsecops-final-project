@@ -9,7 +9,7 @@ services:
         AI_PORT: ${AI_PORT}
         OPENAI_API_KEY: ${OPENAI_API_KEY}
         HOST: ${HOST}
-    container_name: "ai-server"
+#    container_name: "ai-server"
     ports:
       - ${AI_PORT}:${AI_PORT}
     env_file:
@@ -26,7 +26,7 @@ services:
       args:
         APP_PORT: ${APP_PORT}
         HOST: ${HOST}
-    container_name: "app-server"
+#    container_name: "app-server"
     ports:
       - ${APP_PORT}:${APP_PORT}
     env_file:
@@ -42,7 +42,7 @@ services:
       dockerfile: /tests/Dockerfile
     env_file:
       - .env
-    container_name: "tests"
+#    container_name: "tests"
     networks:
       my-network:
         ipv4_address: 192.168.1.102
