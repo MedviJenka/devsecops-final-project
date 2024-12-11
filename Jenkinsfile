@@ -4,7 +4,7 @@ pipeline {
 
     environment {
         DOCKER_COMPOSE_FILE = 'compose.yml' // Path to your Docker Compose file
-        IMAGE_NAME = 'roast-bot' // Replace with your app's Docker image name
+        IMAGE_NAME = 'roast-bot'
     }
 
     stages {
@@ -20,7 +20,7 @@ pipeline {
                 echo 'Building the Docker image...'
                 script {
                     sh """
-                    docker-compose -f ${DOCKER_COMPOSE_FILE} build
+                    docker-compose up --d --build
                     """
                 }
             }
