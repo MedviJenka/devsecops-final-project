@@ -3,8 +3,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_COMPOSE_FILE = 'compose.yml' // Path to your Docker Compose file
-        IMAGE_NAME = 'roast-bot'
+        DOCKER_COMPOSE_FILE = 'compose.yaml'
     }
 
     stages {
@@ -20,7 +19,7 @@ pipeline {
 //                 echo 'Building the Docker image...'
 //                 script {
 //                     sh """
-//                     docker-compose up --d --build
+//                     ${DOCKER_COMPOSE_FILE} up --d --build
 //                     """
 //                 }
 //             }
