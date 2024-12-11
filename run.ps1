@@ -1,9 +1,13 @@
-param(
-    [Parameter(Mandatory = $true)]
-    [string]$docker_username,
-    [Parameter(Mandatory = $true)]
-    [SecureString]$docker_password
-)
+#param(
+#    [Parameter(Mandatory = $true)]
+#    [string]$docker_username,
+#    [Parameter(Mandatory = $true)]
+#    [SecureString]$docker_password
+#)
+
+
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\venv\Scripts\Activate.ps1
 
 # Check versions
 python --version
@@ -13,8 +17,6 @@ docker-compose --version
 
 # Create a virtual environment
 python -m venv ./venv
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\venv\Scripts\Activate.ps1
 
 # Build and start Docker Compose
 docker-compose build
