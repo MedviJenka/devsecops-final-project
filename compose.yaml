@@ -1,55 +1,5 @@
 version: '3.8'
 services:
-
-  ai-server:
-    build:
-      context: .
-      dockerfile: /bot/Dockerfile
-      args:
-        AI_PORT: ${AI_PORT}
-        OPENAI_API_KEY: ${OPENAI_API_KEY}
-        HOST: ${HOST}
-#    container_name: "ai-server"
-    ports:
-      - ${AI_PORT}:${AI_PORT}
-    env_file:
-      - .env
-    networks:
-      my-network:
-        ipv4_address: 192.168.1.100
-    restart: on-failure
-
-  app-server:
-    build:
-      context: .
-      dockerfile: /app/Dockerfile
-      args:
-        APP_PORT: ${APP_PORT}
-        HOST: ${HOST}
-#    container_name: "app-server"
-    ports:
-      - ${APP_PORT}:${APP_PORT}
-    env_file:
-      - .env
-    networks:
-      my-network:
-        ipv4_address: 192.168.1.101
-    restart: on-failure
-
-  tests:
-    build:
-      context: .
-      dockerfile: /tests/Dockerfile
-    env_file:
-      - .env
-#    container_name: "tests"
-    networks:
-      my-network:
-        ipv4_address: 192.168.1.102
-    volumes:
-      - ./test_logs:/tests/logs
-
-
   jenkins:
     image: jenkins/jenkins:latest
     privileged: true
