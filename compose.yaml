@@ -49,13 +49,12 @@ services:
     volumes:
       - ./test_logs:/tests/logs
 
-
   jenkins:
     image: jenkins/jenkins:latest
     privileged: true
     user: root
     ports:
-      - ${JENKINS_PORT}:${JENKINS_PORT}
+      - ${JENKINS_PORT}:8080
     env_file:
       - .env
     container_name: jenkins

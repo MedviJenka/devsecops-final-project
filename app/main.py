@@ -11,6 +11,7 @@ index = r'/index.html'
 def home() -> render_template:
     return render_template(index)
 
+
 @app.route('/chat', methods=['POST'])
 def chat() -> str:
 
