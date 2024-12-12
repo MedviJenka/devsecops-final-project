@@ -14,16 +14,16 @@ pipeline {
             }
         }
 
-//         stage('Build Docker Image') {
-//             steps {
-//                 echo 'Building the Docker image...'
-//                 script {
-//                     sh """
-//                     ${DOCKER_COMPOSE_FILE} up --d --build
-//                     """
-//                 }
-//             }
-//         }
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building the Docker image...'
+                script {
+                    sh """
+                    ${DOCKER_COMPOSE_FILE} up --d --build
+                    """
+                }
+            }
+        }
 
     }
 }
