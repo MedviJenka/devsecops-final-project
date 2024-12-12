@@ -6,7 +6,7 @@ pipeline {
         DOCKER_COMPOSE_FILE = 'compose.yaml'
     }
 
-    node {
+    stages {
         stage('Checkout') {
             steps {
                 echo 'Checking out the repository...'
