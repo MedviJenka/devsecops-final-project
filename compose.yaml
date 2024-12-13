@@ -35,6 +35,9 @@ services:
       my-network:
         ipv4_address: 192.168.1.101
     restart: on-failure
+    depends_on:
+      ai-server:
+        condition: service_started
 
   tests:
     build:
