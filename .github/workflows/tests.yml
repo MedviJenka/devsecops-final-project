@@ -16,8 +16,7 @@
             set -a
             source .env
             set +a
-          shell: bash
-            -
+
         - name: Tests
           uses: cloudposse/github-action-docker-compose-test-run@main
           with:
