@@ -43,3 +43,10 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+        
+    - name: Tests
+      uses: cloudposse/github-action-docker-compose-test-run@main
+      with:
+        file: docker-compose.yml
+        service: tests
+        command: pytest
