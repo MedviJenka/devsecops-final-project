@@ -42,12 +42,11 @@ services:
       dockerfile: /tests/Dockerfile
     env_file:
       - .env
-
     networks:
       my-network:
         ipv4_address: 192.168.1.102
     volumes:
-      - ./test_logs:/tests/logs
+      - shared_tests:/tests
 
   jenkins:
     image: jenkins/jenkins:latest
@@ -63,8 +62,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
       my-network:
-
-
+        ipv4_address: 192.168.1.103
 
   sonarqube:
     image: sonarqube:lts-community
@@ -101,6 +99,43 @@ services:
       my-network:
         ipv4_address: 192.168.1.105
 
+  allure-server:
+    image: "frankescobar/allure-docker-service"
+    environment:
+      CHECK_RESULTS_EVERY_SECONDS: NONE
+      KEEP_HISTORY: 1
+      KEEP_HISTORY_LATEST: 25
+    ports:
+      - ${ALLURE_SERVER}:5050
+    volumes:
+      - ${PWD}/tests/shared_tests:/tests
+    networks:
+      my-network:
+        ipv4_address: 192.168.1.106
+    depends_on:
+      tests:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:${ALLURE_SERVER}/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: on-failure
+
+  allure-ui:
+    image: "frankescobar/allure-docker-service-ui"
+    environment:
+      ALLURE_DOCKER_PUBLIC_API_URL: "http://localhost:${ALLURE_SERVER}/"
+    ports:
+      - ${ALLURE_UI}:5252
+    networks:
+      my-network:
+        ipv4_address: 192.168.1.107
+    depends_on:
+      ai-server:
+        condition: service_healthy
+
 networks:
   my-network:
     driver: bridge
@@ -116,3 +151,4 @@ volumes:
   sonarqube_temp:
   sonar_db:
   sonar_db_data:
+  shared_tests:

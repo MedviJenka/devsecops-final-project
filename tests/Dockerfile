@@ -8,5 +8,4 @@ COPY /app ./app
 COPY ../requirements.txt /tests
 COPY ../.env /tests
 RUN pip install --no-cache-dir -r requirements.txt
-ENTRYPOINT ["pytest"]
-CMD ["/tests/tests/test_requests.py"]
+CMD ["pytest /tests --alluredir /tests"]

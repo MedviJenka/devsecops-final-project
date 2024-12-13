@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
 
     environment {
@@ -11,6 +12,14 @@ pipeline {
                 echo 'Checking out the repository...'
                 git branch: 'main', url: 'https://github.com/MedviJenka/roast-bot.git'
             }
+            post {
+                always {
+                    allure includeProperties:
+                     false,
+                     jdk: '',
+                     results: [[path: 'build/allure-results']]
+                }
+            }
         }
 
         stage('SonarQube Analysis') {
@@ -22,7 +31,7 @@ pipeline {
                     }
                 }
             }
-        }
+
 //          stage('Build Docker Image') {
 //             steps {
 //                 echo 'Building the Docker image...'
@@ -34,7 +43,7 @@ pipeline {
 //             }
 //         }
 
-
+        }
     }
 }
 

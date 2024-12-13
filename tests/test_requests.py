@@ -12,7 +12,7 @@ class Tests:
         assert '' in outcome
 
     def test_2(self) -> None:
-        assert 1 + 1 == 3
+        assert 1 + 1 == 2
 
     def test_3(self) -> None:
         assert 1 + 1 == 2
