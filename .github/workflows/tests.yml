@@ -1,4 +1,4 @@
-  name: Push into Main
+  name: Docker Tests
   on:
     push:
       branches: [ main ]
