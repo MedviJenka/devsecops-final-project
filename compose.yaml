@@ -2,6 +2,7 @@ version: '3.8'
 services:
 
   ai-server:
+    image: ai-server-image
     build:
       context: .
       dockerfile: /bot/Dockerfile
@@ -9,7 +10,6 @@ services:
         AI_PORT: ${AI_PORT}
         OPENAI_API_KEY: ${OPENAI_API_KEY}
         HOST: ${HOST}
-
     ports:
       - ${AI_PORT}:${AI_PORT}
     env_file:
@@ -20,13 +20,13 @@ services:
     restart: on-failure
 
   app-server:
+    image: app-server-iamge
     build:
       context: .
       dockerfile: /app/Dockerfile
       args:
         APP_PORT: ${APP_PORT}
         HOST: ${HOST}
-
     ports:
       - ${APP_PORT}:${APP_PORT}
     env_file:
@@ -40,6 +40,7 @@ services:
         condition: service_started
 
   tests:
+    image: tests-image
     build:
       context: .
       dockerfile: /tests/Dockerfile
