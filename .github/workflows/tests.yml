@@ -1,7 +1,7 @@
   name: Push into Main
   on:
     push:
-      branches: [ master ]
+      branches: [ main ]
 
   jobs:
     test:
