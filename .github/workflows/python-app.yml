@@ -43,4 +43,7 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+<<<<<<< Updated upstream
       
+=======
+>>>>>>> Stashed changes
