@@ -37,6 +37,3 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
-    - name: Build the Docker
-      run: docker build -t image \ 
-          docker run image
