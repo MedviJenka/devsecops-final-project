@@ -1,24 +1,18 @@
-  name: Docker Tests
-  on:
-    push:
-      branches: [ main ]
+name: Docker Tests
+on:
+  push:
+    branches: [ main ]
 
-  jobs:
-    test:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v3
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      -
+      - name: Checkout
+        uses: actions/checkout@v3
 
-        - name: Load environment variables
-          run: |
-            echo "Loading environment variables from .env file"
-            set -a
-            source .env
-            set +a
-
-        - name: Tests
-          uses: cloudposse/github-action-docker-compose-test-run@main
-          with:
-            file: compose.yaml
-            service: tests
+      - name: Tests
+        uses: cloudposse/github-action-docker-compose-test-run@main
+        with:
+          file: compose.yaml
+          service: tests

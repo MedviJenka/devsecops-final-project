@@ -27,6 +27,18 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: "3.12"
+
+    - name: Load .env file from repository secrets
+      run: |
+        echo "$ENV_FILE" > .env
+      env:
+        ENV_FILE: ${{ secrets.ENV_FILE }}
+
+    - name: Display loaded environment variables (optional for debugging)
+      run: |
+        echo "Loaded environment variables:"
+        cat .env
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
