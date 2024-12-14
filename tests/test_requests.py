@@ -13,7 +13,7 @@ class Tests:
 
     def test_2(self) -> None:
         outcome = request.health_check()
-        print(outcome)
+        assert outcome == 200
 
     def test_3(self) -> None:
         assert 1 + 1 == 2

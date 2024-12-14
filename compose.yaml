@@ -14,12 +14,12 @@ services:
       - ${AI_PORT}:${AI_PORT}
     env_file:
       - .env
-#    healthcheck:
-#      test: ["CMD", "curl -f http://192.168.1.100:${AI_PORT}/health | grep -q 'Service is healthy' || exit 1"]
-#      interval: 5s
-#      timeout: 5s
-#      retries: 3
-#      start_period: 1s
+    healthcheck:
+      test: ["CMD", "curl -f ${AI_SERVER_PRIVATE_ADDRESS}:${AI_PORT}/health | grep -q 'Service is healthy' || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 1s
     restart: on-failure
     networks:
       my-network:
@@ -41,9 +41,9 @@ services:
       my-network:
         ipv4_address: ${APP_SERVER_PRIVATE_ADDRESS}
     restart: on-failure
-#    depends_on:
-#      ai-server:
-#        condition: service_healthy
+    depends_on:
+      - ai-server
+
 
   tests:
     image: tests-image
@@ -150,7 +150,7 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - "${NGINX_PORT}:${NGINX_PORT}"
+      - ${NGINX_PORT}:${NGINX_PORT}
     environment:
       - AI_SERVER_PRIVATE_ADDRESS=${AI_SERVER_PRIVATE_ADDRESS}
       - AI_SERVER_PORT=${AI_PORT}
