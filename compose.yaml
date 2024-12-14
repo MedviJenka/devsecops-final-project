@@ -10,21 +10,20 @@ services:
       args:
         AI_PORT: ${AI_PORT}
         OPENAI_API_KEY: ${OPENAI_API_KEY}
-#        HOST: ${HOST}
     ports:
       - ${AI_PORT}:${AI_PORT}
     env_file:
       - .env
-    healthcheck:
-      test: ["CMD", "curl -f http://192.168.1.100:${AI_PORT}/health | grep -q 'Service is healthy' || exit 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 3
-      start_period: 1s
-    restart: always
+#    healthcheck:
+#      test: ["CMD", "curl -f http://192.168.1.100:${AI_PORT}/health | grep -q 'Service is healthy' || exit 1"]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 3
+#      start_period: 1s
+    restart: on-failure
     networks:
       my-network:
-        ipv4_address: 192.168.1.100
+        ipv4_address: ${AI_SERVER_PRIVATE_ADDRESS}
 
   app-server:
     image: app-server-iamge
@@ -40,11 +39,11 @@ services:
       - .env
     networks:
       my-network:
-        ipv4_address: 192.168.1.101
+        ipv4_address: ${APP_SERVER_PRIVATE_ADDRESS}
     restart: on-failure
-    depends_on:
-      ai-server:
-        condition: service_healthy
+#    depends_on:
+#      ai-server:
+#        condition: service_healthy
 
   tests:
     image: tests-image
@@ -128,7 +127,7 @@ services:
       tests:
         condition: service_completed_successfully
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:${ALLURE_SERVER}/health" ]
+      test: [ "CMD", "curl", "-f", "http://192.168.1.100:${ALLURE_SERVER}/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -147,6 +146,21 @@ services:
     depends_on:
       ai-server:
         condition: service_healthy
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "${NGINX_PORT}:${NGINX_PORT}"
+    environment:
+      - AI_SERVER_PRIVATE_ADDRESS=${AI_SERVER_PRIVATE_ADDRESS}
+      - AI_SERVER_PORT=${AI_PORT}
+      - APP_SERVER_PRIVATE_ADDRESS=${APP_SERVER_PRIVATE_ADDRESS}
+      - APP_SERVER_PORT=${APP_PORT}
+    depends_on:
+      - ai-server
+      - app-server
+    volumes:
+      - ./nginx.conf.template:/etc/nginx/templates/nginx.conf.template
 
 networks:
   my-network:
