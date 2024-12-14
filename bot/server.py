@@ -7,7 +7,12 @@ roast_agent = RoastAgent()
 app = Flask(__name__)
 
 
-@app.route('/roast', methods=['POST'])
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({"message": "Service is healthy"}), 200
+
+
+@app.route(rule='/roast', methods=['POST'])
 def main() -> tuple:
 
     """Endpoint to roast the user."""

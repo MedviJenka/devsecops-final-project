@@ -12,7 +12,8 @@ class Tests:
         assert '' in outcome
 
     def test_2(self) -> None:
-        assert 1 + 1 == 2
+        outcome = request.health_check()
+        print(outcome)
 
     def test_3(self) -> None:
         assert 1 + 1 == 2

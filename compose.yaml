@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
 
   ai-server:
@@ -9,15 +10,21 @@ services:
       args:
         AI_PORT: ${AI_PORT}
         OPENAI_API_KEY: ${OPENAI_API_KEY}
-        HOST: ${HOST}
+#        HOST: ${HOST}
     ports:
       - ${AI_PORT}:${AI_PORT}
     env_file:
       - .env
+    healthcheck:
+      test: ["CMD", "curl -f http://192.168.1.100:${AI_PORT}/health | grep -q 'Service is healthy' || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 1s
+    restart: always
     networks:
       my-network:
         ipv4_address: 192.168.1.100
-    restart: on-failure
 
   app-server:
     image: app-server-iamge
@@ -37,7 +44,7 @@ services:
     restart: on-failure
     depends_on:
       ai-server:
-        condition: service_started
+        condition: service_healthy
 
   tests:
     image: tests-image
@@ -51,6 +58,7 @@ services:
         ipv4_address: 192.168.1.102
     volumes:
       - shared_tests:/tests
+    restart: on-failure
 
   jenkins:
     image: jenkins/jenkins:latest

@@ -8,7 +8,7 @@ from bot.prompts import PROMPT
 class RoastAgent:
 
     """
-    send a openai request to the sever
+    send an openai request to the sever
     """
 
     client = OpenAI(api_key=Config.OPENAI_API_KEY)
