@@ -9,6 +9,7 @@ load_dotenv()
 class RoastRequest:
 
     def __init__(self) -> None:
+        # q
         self.url = f"http://localhost:{Config.AI_PORT}/roast"
         # self.url = f"http://192.168.1.100:{Config.AI_PORT}/roast"
 
