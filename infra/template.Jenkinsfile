@@ -17,9 +17,12 @@ pipeline {
 
         stage("Sonarqube Analysis") {
             steps {
-                withSonarQubeEnv('sonar-scanner') {
-                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=app \
-                    -Dsonar.projectKey=app'''
+                withSonarQubeEnv('sonar-server') {
+                    sh '''$SCANNER_HOME/bin/sonar-scanner
+                        -Dsonar.projectName=app
+                        -Dsonar.projectKey=app
+                        -Dsonar.host.url=http://192.168.1.104:91
+                    '''
                 }
             }
         }
