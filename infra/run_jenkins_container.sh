@@ -27,3 +27,6 @@ docker compose up -d jenkins
 
 # get jenkins password
 docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+
+# make it executable
+run_jenkins_container.sh

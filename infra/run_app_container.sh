@@ -25,4 +25,3 @@ trivy fs .
 
 # scan containers
 trivy image jenkins
-trivy image
