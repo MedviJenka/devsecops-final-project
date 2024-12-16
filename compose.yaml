@@ -42,7 +42,7 @@ services:
       - .env
     networks:
       my-network:
-        ipv4_address: 192.168.1.102
+        ipv4_address: ${TESTS_PRIVATE_IP}
     depends_on:
       - ai-server
       - app-server
@@ -155,4 +155,3 @@ volumes:
 
   # shared folders
   shared_tests:
-  shared_folder:
