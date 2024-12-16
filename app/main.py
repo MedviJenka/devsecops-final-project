@@ -1,6 +1,6 @@
 from core.config import Config
 from app.roast_request import RoastRequest
-from flask import Flask, render_template, request, send_from_directory, Response
+from flask import Flask, render_template, request
 
 
 app = Flask(__name__)

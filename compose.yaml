@@ -12,19 +12,19 @@ services:
       - ${AI_PORT}:${AI_PORT}
     env_file:
       - .env
-    healthcheck:
-      test: ["CMD", "curl -f ${AI_SERVER_PRIVATE_ADDRESS}:${AI_PORT}/health | grep -q 'Service is healthy' || exit 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 3
-      start_period: 1s
+#    healthcheck:
+#      test: ["CMD", "curl -f http://192.168.1.100:${AI_PORT}/health | grep -q 'Service is healthy' || exit 1"]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 3
+#      start_period: 1s
     restart: on-failure
     networks:
       my-network:
         ipv4_address: ${AI_SERVER_PRIVATE_ADDRESS}
 
   app-server:
-    image: app-server-iamge
+    image: app-server-image
     build:
       context: .
       dockerfile: /app/Dockerfile
@@ -39,8 +39,9 @@ services:
       my-network:
         ipv4_address: ${APP_SERVER_PRIVATE_ADDRESS}
     restart: on-failure
-    depends_on:
-      - ai-server
+#    depends_on:
+#      ai-server:
+#        condition: service_healthy
 
   tests:
     image: tests-image
@@ -54,7 +55,6 @@ services:
         ipv4_address: 192.168.1.102
     volumes:
       - shared_tests:/tests
-    restart: on-failure
 
   jenkins:
     image: jenkins/jenkins:latest
@@ -66,7 +66,7 @@ services:
       - .env
     container_name: jenkins
     volumes:
-      - "/home/jenkins_compose/jenkins_configuration:/var/jenkins_home"
+      - "/home/${myname}/jenkins_compose/jenkins_configuration:/var/jenkins_home"
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
       my-network:
@@ -74,8 +74,8 @@ services:
 
   sonarqube:
     image: sonarqube:lts-community
-    depends_on:
-      - sonar_db
+#    depends_on:
+#      - sonar_db
     environment:
       SONAR_JDBC_URL: jdbc:postgresql://sonar_db:5432/sonar
       SONAR_JDBC_USERNAME: sonar
@@ -116,15 +116,15 @@ services:
     ports:
       - ${ALLURE_SERVER}:5050
     volumes:
-      - /tests/shared_tests:/tests
+      - ${PWD}/tests/shared_tests:/tests
     networks:
       my-network:
         ipv4_address: 192.168.1.106
-    depends_on:
-      tests:
-        condition: service_completed_successfully
+#    depends_on:
+#      tests:
+#        condition: service_completed_successfully
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://192.168.1.100:${ALLURE_SERVER}/health" ]
+      test: [ "CMD", "curl", "-f", "http://${APP_SERVER_PRIVATE_ADDRESS}:${ALLURE_SERVER}/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -140,14 +140,14 @@ services:
     networks:
       my-network:
         ipv4_address: 192.168.1.107
-    depends_on:
-      ai-server:
-        condition: service_healthy
+#    depends_on:
+#      ai-server:
+#        condition: service_healthy
 
   nginx:
     image: nginx:latest
     ports:
-      - ${NGINX_PORT}:${NGINX_PORT}
+      - ${NGINX_PORT}:80
     environment:
       - AI_SERVER_PRIVATE_ADDRESS=${AI_SERVER_PRIVATE_ADDRESS}
       - AI_SERVER_PORT=${AI_PORT}
@@ -155,7 +155,6 @@ services:
       - APP_SERVER_PORT=${APP_PORT}
     depends_on:
       - ai-server
-      - app-server
     volumes:
       - ./nginx.conf.template:/etc/nginx/templates/nginx.conf.template
 

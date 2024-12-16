@@ -7,6 +7,11 @@ roast_agent = RoastAgent()
 app = Flask(__name__)
 
 
+@app.route(rule='/')
+def landing_page():
+    return jsonify({"message": "server is up"}), 200
+
+
 @app.route('/health', methods=['GET'])
 def health():
     return jsonify({"message": "Service is healthy"}), 200

@@ -1,3 +1,4 @@
+import requests
 from app.roast_request import RoastRequest
 
 
@@ -15,27 +16,12 @@ class Tests:
         outcome = request.health_check()
         assert outcome == 200
 
-    def test_3(self) -> None:
-        assert 1 + 1 == 2
+    def test_nginx_is_up(self) -> None:
+        url = "http://localhost:89/health"  # Replace with your Nginx URL
+        response = requests.get(url)
+        assert response.status_code == 200
 
-    def test_4(self) -> None:
-        assert 1 + 1 == 2
-
-    def test_5(self) -> None:
-        assert 1 + 1 == 2
-
-    def test_6(self) -> None:
-        assert 1 + 1 == 2
-
-    def test_7(self) -> None:
-        assert 1 + 1 == 2
-
-    def test_8(self) -> None:
-        assert 1 + 1 == 2
-
-    def test_9(self) -> None:
-        assert 1 + 1 == 2
-
-    def test_10(self) -> None:
-        assert 1 + 1 == 2
-
+    def test_nginx_serving_static_files(self) -> None:
+        url = "http://localhost:88/static/images/roasted.gif"
+        response = requests.get(url)
+        assert response.status_code == 200
