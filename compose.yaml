@@ -21,7 +21,7 @@ services:
     restart: on-failure
     networks:
       my-network:
-        ipv4_address: ${AI_SERVER_PRIVATE_ADDRESS}
+        ipv4_address: ${AI_SERVER_PRIVATE_IP}
 
   app-server:
     image: app-server-image
@@ -37,24 +37,25 @@ services:
       - .env
     networks:
       my-network:
-        ipv4_address: ${APP_SERVER_PRIVATE_ADDRESS}
+        ipv4_address: ${APP_SERVER_PRIVATE_IP}
     restart: on-failure
-#    depends_on:
-#      ai-server:
-#        condition: service_healthy
 
   tests:
     image: tests-image
     build:
-      context: .
       dockerfile: /tests/Dockerfile
     env_file:
       - .env
     networks:
       my-network:
         ipv4_address: 192.168.1.102
-    volumes:
-      - shared_tests:/tests
+    depends_on:
+      - ai-server
+      - app-server
+      - jenkins
+      - nginx
+      - sonar_db
+      - sonarqube
 
   jenkins:
     image: jenkins/jenkins:latest
@@ -70,7 +71,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
       my-network:
-        ipv4_address: 192.168.1.103
+        ipv4_address: ${JENKINS_PRIVATE_IP}
 
   sonarqube:
     image: sonarqube:lts-community
@@ -92,7 +93,7 @@ services:
       - sonarqube_temp:/opt/sonarqube/temp
     networks:
       my-network:
-        ipv4_address: 192.168.1.104
+        ipv4_address: ${SONARQUBE_PRIVATE_IP}
 
   sonar_db:
     image: postgres:13
@@ -105,7 +106,7 @@ services:
       - sonar_db_data:/var/lib/postgresql/data
     networks:
       my-network:
-        ipv4_address: 192.168.1.105
+        ipv4_address: ${SONAR_DB_PRIVATE_IP}
 
   allure-server:
     image: "frankescobar/allure-docker-service"
@@ -114,49 +115,29 @@ services:
       KEEP_HISTORY: 1
       KEEP_HISTORY_LATEST: 25
     ports:
-      - ${ALLURE_SERVER}:5050
+      - "${ALLURE_SERVER_PORT}:5050"
     volumes:
-      - ${PWD}/tests/shared_tests:/tests
+      - ${PWD}/tests:/app/projects
     networks:
       my-network:
-        ipv4_address: 192.168.1.106
-#    depends_on:
-#      tests:
-#        condition: service_completed_successfully
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://${APP_SERVER_PRIVATE_ADDRESS}:${ALLURE_SERVER}/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-    restart: on-failure
-
-  allure-ui:
-    image: "frankescobar/allure-docker-service-ui"
-    environment:
-      ALLURE_DOCKER_PUBLIC_API_URL: "http://localhost:${ALLURE_SERVER}/"
-    ports:
-      - ${ALLURE_UI}:5252
-    networks:
-      my-network:
-        ipv4_address: 192.168.1.107
-#    depends_on:
-#      ai-server:
-#        condition: service_healthy
+        ipv4_address: ${ALLURE_SERVER_PRIVATE_IP}
 
   nginx:
     image: nginx:latest
     ports:
       - ${NGINX_PORT}:80
     environment:
-      - AI_SERVER_PRIVATE_ADDRESS=${AI_SERVER_PRIVATE_ADDRESS}
-      - AI_SERVER_PORT=${AI_PORT}
-      - APP_SERVER_PRIVATE_ADDRESS=${APP_SERVER_PRIVATE_ADDRESS}
-      - APP_SERVER_PORT=${APP_PORT}
-    depends_on:
-      - ai-server
+      - AI_SERVER_PRIVATE_IP=${AI_SERVER_PRIVATE_IP}
+      - AI_PORT=${AI_PORT}
+      - APP_SERVER_PRIVATE_IP=${APP_SERVER_PRIVATE_IP}
+      - APP_PORT=${APP_PORT}
     volumes:
       - ./nginx.conf.template:/etc/nginx/templates/nginx.conf.template
+    networks:
+      my-network:
+        ipv4_address: ${NGINX_PRIVATE_IP}
+    depends_on:
+      - ai-server
 
 networks:
   my-network:
@@ -166,6 +147,7 @@ networks:
         - subnet: 192.168.1.0/24
 
 volumes:
+
   # sonar DB
   sonarqube_conf:
   sonarqube_data:

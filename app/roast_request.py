@@ -1,6 +1,6 @@
 import requests
 from dotenv import load_dotenv
-from core.config import Config
+from core.config import PortConfig, PrivateIPConfig
 
 
 load_dotenv()
@@ -9,7 +9,7 @@ load_dotenv()
 class RoastRequest:
 
     def __init__(self) -> None:
-        self.url = f"http://{Config.AI_SERVER_PRIVATE_ADDRESS}:{Config.AI_PORT}/roast"
+        self.url = f"http://{PrivateIPConfig.AI_SERVER_PRIVATE_IP}:{PortConfig.AI_PORT}/roast"
 
     def request_handler(self, input_text: str):
         headers = {"Content-Type": "application/json"}

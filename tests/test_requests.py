@@ -1,27 +1,37 @@
 import requests
 from app.roast_request import RoastRequest
-
+from core.config import PortConfig, PrivateIPConfig
 
 request = RoastRequest()
 
 
-class Tests:
+class TestContainers:
 
-    def test_1(self) -> None:
-        outcome = request.send_roast_request('hello')
-        print(outcome)
-        assert '' in outcome
+    """
+    for local tests change private ip config to http://localhost
+    """
 
-    def test_2(self) -> None:
-        outcome = request.health_check()
-        assert outcome == 200
-
-    def test_nginx_is_up(self) -> None:
-        url = "http://localhost:89/health"  # Replace with your Nginx URL
+    def test_nginx(self) -> None:
+        url = f"http://{PrivateIPConfig.NGINX_PRIVATE_IP}:80"
         response = requests.get(url)
         assert response.status_code == 200
 
-    def test_nginx_serving_static_files(self) -> None:
-        url = "http://localhost:88/static/images/roasted.gif"
+    def test_ai_server_health(self) -> None:
+        url = f"http://{PrivateIPConfig.AI_SERVER_PRIVATE_IP}:{PortConfig.AI_PORT}/health"
+        response = requests.get(url)
+        assert response.status_code == 200
+
+    def test_app_server_health(self) -> None:
+        url = f"http://{PrivateIPConfig.APP_SERVER_PRIVATE_IP}:{PortConfig.APP_PORT}/health"
+        response = requests.get(url)
+        assert response.status_code == 200
+
+    def test_gif_image(self) -> None:
+        url = f"http://{PrivateIPConfig.APP_SERVER_PRIVATE_IP}:{PortConfig.APP_PORT}/static/images/roasted.gif"
+        response = requests.get(url)
+        assert response.status_code == 200
+
+    def test_allure_server(self) -> None:
+        url = f"http://{PrivateIPConfig.ALLURE_SERVER_PRIVATE_IP}:5050"
         response = requests.get(url)
         assert response.status_code == 200

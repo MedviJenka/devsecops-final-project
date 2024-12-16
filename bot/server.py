@@ -1,4 +1,4 @@
-from core.config import Config
+from core.config import AppConfig, PortConfig
 from bot.ai import RoastAgent
 from flask import Flask, request, jsonify
 
@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 
 @app.route(rule='/')
-def landing_page():
+def landing_page() -> jsonify:
     return jsonify({"message": "server is up"}), 200
 
 
@@ -37,4 +37,4 @@ def main() -> tuple:
 
 
 if __name__ == '__main__':
-    app.run(host=Config.HOST, port=Config.AI_PORT, debug=Config.DEBUG)
+    app.run(host=AppConfig.HOST, port=PortConfig.AI_PORT, debug=AppConfig.DEBUG)

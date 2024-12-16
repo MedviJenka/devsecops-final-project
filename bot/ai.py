@@ -1,5 +1,5 @@
 from openai import OpenAI
-from core.config import Config
+from core.config import AppConfig
 from dataclasses import dataclass
 from bot.prompts import PROMPT
 
@@ -11,7 +11,7 @@ class RoastAgent:
     send an openai request to the sever
     """
 
-    client = OpenAI(api_key=Config.OPENAI_API_KEY)
+    client = OpenAI(api_key=AppConfig.OPENAI_API_KEY)
 
     def roast_me(self, user_input: str) -> str:
         response = self.client.chat.completions.create(
