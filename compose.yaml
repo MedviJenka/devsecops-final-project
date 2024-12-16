@@ -166,6 +166,7 @@ networks:
         - subnet: 192.168.1.0/24
 
 volumes:
+  # sonar DB
   sonarqube_conf:
   sonarqube_data:
   sonarqube_extensions:
@@ -173,4 +174,7 @@ volumes:
   sonarqube_temp:
   sonar_db:
   sonar_db_data:
+
+  # shared folders
   shared_tests:
+  shared_folder:
