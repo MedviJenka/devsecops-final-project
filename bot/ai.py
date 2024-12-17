@@ -5,7 +5,7 @@ from bot.prompts import PROMPT
 
 
 @dataclass
-class RoastAgent:
+class Agent:
 
     """
     send an openai request to the sever
@@ -13,7 +13,7 @@ class RoastAgent:
 
     client = OpenAI(api_key=AppConfig.OPENAI_API_KEY)
 
-    def roast_me(self, user_input: str) -> str:
+    def set_ai(self, user_input: str) -> str:
         response = self.client.chat.completions.create(
             messages=[
                 {"role": "system", "content": PROMPT},

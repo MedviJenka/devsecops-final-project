@@ -23,7 +23,7 @@ class RequestManager:
         except requests.exceptions.RequestException as e:
             return {"error": str(e)}
 
-    def send_roast_request(self, user_input: str) -> str:
+    def send_request(self, user_input: str) -> str:
         response = self.request_handler(user_input)
         if "roast" in response:
             return response["roast"].strip()

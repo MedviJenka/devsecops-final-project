@@ -1,9 +1,9 @@
 from core.config import AppConfig, PortConfig
-from bot.ai import RoastAgent
+from bot.ai import Agent
 from flask import Flask, request, jsonify
 
 
-roast_agent = RoastAgent()
+agent = Agent()
 app = Flask(__name__)
 
 
@@ -21,16 +21,16 @@ def health():
 def main() -> tuple:
 
     """Endpoint to roast the user."""
+
     try:
-        # Get user input from the POST request
         data = request.get_json()
         if 'input' not in data:
             return jsonify({"error": "Invalid input. 'input' field is required."}), 400
 
         user_input = data['input']
-        roast_response = roast_agent.roast_me(user_input)
+        response = agent.set_ai(user_input)
 
-        return jsonify({"roast": roast_response}), 200
+        return jsonify({"roast": response}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

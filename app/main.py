@@ -27,7 +27,7 @@ def chat() -> str:
         return render_template(index, response="Please enter something to roast.")
 
     try:
-        reply = roast_agent.send_roast_request(user_input=user_input)
+        reply = roast_agent.send_request(user_input=user_input)
         return render_template(index, response=reply)
 
     except Exception as e:

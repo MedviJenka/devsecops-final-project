@@ -12,6 +12,11 @@ services:
       - ${AI_PORT}:${AI_PORT}
     env_file:
       - .env
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://${AI_SERVER_PRIVATE_IP}:{AI_PORT}/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     restart: on-failure
     networks:
       my-network:
@@ -40,9 +45,13 @@ services:
       dockerfile: /tests/Dockerfile
     env_file:
       - .env
+    ports:
+      - ${TESTS_PORT}:${TESTS_PORT}
     networks:
       my-network:
         ipv4_address: ${TESTS_PRIVATE_IP}
+    volumes:
+      - ${PWD}/allure-results:/tests/allure-results
     depends_on:
       - ai-server
       - app-server
@@ -50,8 +59,6 @@ services:
       - nginx
       - sonar_db
       - sonarqube
-    volumes:
-      - ${PWD}/allure-results:/tests/allure-results
 
   jenkins:
     image: jenkins/jenkins:latest
@@ -63,7 +70,7 @@ services:
       - .env
     container_name: jenkins
     volumes:
-      - "/home/${myname}/jenkins_compose/jenkins_configuration:/var/jenkins_home"
+      - "/home/jenkins_compose/jenkins_configuration:/var/jenkins_home"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - .:/app
     environment:
@@ -100,6 +107,8 @@ services:
       POSTGRES_USER: sonar
       POSTGRES_PASSWORD: sonar
       POSTGRES_DB: sonar
+    ports:
+      - ${SONAR_DB_PORT}:${SONAR_DB_PORT}
     volumes:
       - sonar_db:/var/lib/postgresql
       - sonar_db_data:/var/lib/postgresql/data
@@ -130,8 +139,11 @@ services:
       - AI_PORT=${AI_PORT}
       - APP_SERVER_PRIVATE_IP=${APP_SERVER_PRIVATE_IP}
       - APP_PORT=${APP_PORT}
+
+# TODO: update nginx.conf with working functionality
     volumes:
-      - ./nginx.conf.template:/etc/nginx/templates/nginx.conf.template
+      - ./infra/nginx.conf:/etc/nginx/nginx.conf
+      - ./infra/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       my-network:
         ipv4_address: ${NGINX_PRIVATE_IP}
