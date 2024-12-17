@@ -1,6 +1,7 @@
+from app.request_manager import RequestManager
 from core.config import AppConfig, PortConfig
-from app.roast_request import RoastRequest
 from flask import Flask, render_template, request, jsonify
+
 
 app = Flask(__name__)
 index = r'/index.html'
@@ -19,7 +20,7 @@ def health() -> jsonify:
 @app.route('/chat', methods=['POST'])
 def chat() -> str:
 
-    roast_agent = RoastRequest()
+    roast_agent = RequestManager()
     user_input = request.form.get('user_input')
 
     if not user_input:

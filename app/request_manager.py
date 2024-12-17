@@ -6,7 +6,7 @@ from core.config import PortConfig, PrivateIPConfig
 load_dotenv()
 
 
-class RoastRequest:
+class RequestManager:
 
     def __init__(self) -> None:
         self.url = f"http://{PrivateIPConfig.AI_SERVER_PRIVATE_IP}:{PortConfig.AI_PORT}/roast"

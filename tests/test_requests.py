@@ -1,8 +1,8 @@
 import requests
-from app.roast_request import RoastRequest
+from app.request_manager import RequestManager
 from core.config import PortConfig, PrivateIPConfig
 
-request = RoastRequest()
+request = RequestManager()
 
 
 class TestContainers:
