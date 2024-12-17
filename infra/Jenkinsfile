@@ -1,38 +1,76 @@
 pipeline {
-
     agent any
 
-    environment {
-        SCANNER_HOME = tool 'sonar-scanner'
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the application...'
+                sh 'docker-compose build app'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the application...'
+                sh 'docker-compose up -d --no-deps app'
+            }
+        }
     }
 
-    stages {
-
-        stage('Checkout') {
-            steps {
-                echo 'Checking out the repository...'
-                git branch: 'main', url: 'https://github.com/MedviJenka/roast-bot.git'
-            }
+    post {
+        success {
+            echo 'Deployment successful!'
         }
-
-        stage("Sonarqube Analysis") {
-            steps {
-                withSonarQubeEnv('sonar-scanner') {
-                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=app \
-                    -Dsonar.projectKey=app'''
-                }
-            }
-        }
-
-        stage("quality gate") {
-            steps {
-                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'SONAR_TOKEN'
-                }
-            }
+        failure {
+            echo 'Deployment failed!'
         }
     }
 }
 
 
 
+
+
+
+
+
+
+
+// pipeline {
+//
+//     agent any
+//
+//     environment {
+//         SCANNER_HOME = tool 'sonar-scanner'
+//     }
+//
+//     stages {
+//
+//         stage('Checkout') {
+//             steps {
+//                 echo 'Checking out the repository...'
+//                 git branch: 'main', url: 'https://github.com/MedviJenka/roast-bot.git'
+//             }
+//         }
+//
+//         stage("Sonarqube Analysis") {
+//             steps {
+//                 withSonarQubeEnv('sonar-scanner') {
+//                     sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=app \
+//                     -Dsonar.projectKey=app'''
+//                 }
+//             }
+//         }
+//
+//         stage("quality gate") {
+//             steps {
+//                 script {
+//                     waitForQualityGate abortPipeline: false, credentialsId: 'SONAR_TOKEN'
+//                 }
+//             }
+//         }
+//     }
+// }
+//
+//
+//

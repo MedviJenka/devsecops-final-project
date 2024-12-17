@@ -65,6 +65,9 @@ services:
     volumes:
       - "/home/${myname}/jenkins_compose/jenkins_configuration:/var/jenkins_home"
       - "/var/run/docker.sock:/var/run/docker.sock"
+      - .:/app
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
     networks:
       my-network:
         ipv4_address: ${JENKINS_PRIVATE_IP}
