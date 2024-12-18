@@ -1,11 +1,14 @@
 import os
 import openai
+from core.config import AppConfig
+
 
 # Configure OpenAI API key
-openai.api_key = "your_openai_api_key"
+openai.api_key = AppConfig.OPENAI_API_KEY
 
 # Directory containing logs
 log_dir = "./container_logs"
+
 
 # Function to summarize a log file
 def summarize_log(file_path):
@@ -22,7 +25,10 @@ def summarize_log(file_path):
             {"role": "user", "content": f"Summarize the following error log:\n\n{log_content}"}
         ]
     )
-    return response['choices'][0]['message']['content']
+    output = response['choices'][0]['message']['content']
+    print(output)
+    return output
+
 
 # Process each log file
 for log_file in os.listdir(log_dir):
