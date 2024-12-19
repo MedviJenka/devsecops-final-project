@@ -9,7 +9,7 @@ from core.executor import Executor
 @dataclass
 class ContainerAgent(Executor):
 
-    log_dir = "../container_logs"
+    log_dir = "../containers/logs"
     client = OpenAI(api_key=AppConfig.OPENAI_API_KEY)
 
     def send_logs_to_ai_agent(self, file_path) -> str:
