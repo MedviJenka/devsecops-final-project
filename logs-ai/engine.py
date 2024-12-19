@@ -1,39 +1,54 @@
 import os
-import openai
+import subprocess
+from openai import OpenAI
 from core.config import AppConfig
+from dataclasses import dataclass
+from core.executor import Executor
 
 
-# Configure OpenAI API key
-openai.api_key = AppConfig.OPENAI_API_KEY
+@dataclass
+class ContainerAgent(Executor):
 
-# Directory containing logs
-log_dir = "./container_logs"
+    log_dir = "./container_logs"
+    client = OpenAI(api_key=AppConfig.OPENAI_API_KEY)
 
+    def send_logs_to_ai_agent(self, file_path) -> str:
+        with open(file_path, "r") as f:
+            log_content = f.read()
 
-# Function to summarize a log file
-def summarize_log(file_path):
-    with open(file_path, "r") as f:
-        log_content = f.read()
+        if not log_content.strip():
+            return "No errors found in this log."
+        response = self.client.chat.completions.create(
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant that summarizes error logs."},
+                {"role": "user", "content": f"Summarize the following error log:\n\n{log_content}"}
+            ],
+            model="gpt-4o",
+            temperature=0.5
+        )
+        content = response.choices[0].message.content
+        return content
 
-    if not log_content.strip():
-        return "No errors found in this log."
+    def summarize_logs(self) -> None:
+        for log_file in os.listdir(self.log_dir):
+            log_path = os.path.join(self.log_dir, log_file)
+            if os.path.isfile(log_path):
+                print(f"Summarizing log: {log_file}")
+                summary = self.send_logs_to_ai_agent(log_path)
+                print(f"Summary for {log_file}:\n{summary}\n")
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant that summarizes error logs."},
-            {"role": "user", "content": f"Summarize the following error log:\n\n{log_content}"}
-        ]
-    )
-    output = response['choices'][0]['message']['content']
-    print(output)
-    return output
+    def execute(self) -> None:
 
+        try:
+            subprocess.run(
+                ["powershell", "-ExecutionPolicy", "Bypass", "-File", "generate_logs.ps1"],
+                capture_output=True,  # Capture output
+                text=True,  # Output as string
+                check=True  # Raise exception for non-zero exit codes
+            )
 
-# Process each log file
-for log_file in os.listdir(log_dir):
-    log_path = os.path.join(log_dir, log_file)
-    if os.path.isfile(log_path):
-        print(f"Summarizing log: {log_file}")
-        summary = summarize_log(log_path)
-        print(f"Summary for {log_file}:\n{summary}\n")
+        except subprocess.CalledProcessError as e:
+            print("Error running the script:")
+            print(e.stderr)
+
+        self.summarize_logs()
