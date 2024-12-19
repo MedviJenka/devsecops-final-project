@@ -48,7 +48,12 @@ class ContainerAgent(Executor):
             )
 
         except subprocess.CalledProcessError as e:
-            print("Error running the script:")
+            print("There are no running containers")
             print(e.stderr)
 
-        self.summarize_logs()
+        finally:
+            self.summarize_logs()
+
+
+c = ContainerAgent()
+c.execute()

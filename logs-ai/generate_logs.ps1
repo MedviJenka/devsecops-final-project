@@ -11,7 +11,7 @@ $containers = docker ps --format "{{.Names}}"
 # Check if containers were found
 if (-Not $containers) {
     Write-Host "No running containers found."
-    return
+    exit 1
 }
 
 # Loop through each container and extract logs
