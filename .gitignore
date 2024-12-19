@@ -4,4 +4,4 @@
 /venv/
 /core/__pycache__/
 /app/__pycache__/
-/logs-ai/
+/logs-ai/container_logs/
