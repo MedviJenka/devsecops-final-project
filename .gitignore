@@ -5,3 +5,4 @@
 /core/__pycache__/
 /app/__pycache__/
 /ai_scope/infra/containers/logs/
+/tests/logs/

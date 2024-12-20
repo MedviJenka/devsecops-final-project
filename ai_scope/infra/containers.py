@@ -39,7 +39,7 @@ def filter_logs_for_errors(log_lines):
 
 
 def main():
-    log_dir = "./containers/logs"
+
     create_log_directory()
 
     containers = get_running_containers()
@@ -63,7 +63,7 @@ def main():
             print(f"Log truncated to the last 100 lines for container: {container}")
 
         # Save raw logs
-        raw_log_file = os.path.join(log_dir, f"{container}.log")
+        raw_log_file = os.path.join(PATH, f"{container}.log")
         with open(raw_log_file, "w", encoding="utf-8") as f:
             f.write("\n".join(log_lines))
         print(f"Raw logs saved to {raw_log_file}")
@@ -75,12 +75,12 @@ def main():
             continue
 
         # Save filtered logs
-        filtered_log_file = os.path.join(log_dir, f"{container}_error.log")
+        filtered_log_file = os.path.join(PATH, f"{container}_error.log")
         with open(filtered_log_file, "w", encoding="utf-8") as f:
             f.write("\n".join(filtered_logs))
         print(f"Filtered logs saved to {filtered_log_file}")
 
-    print(f"Log extraction complete. Check the {log_dir} directory.")
+    print(f"Log extraction complete. Check the {PATH} directory.")
 
 
 if __name__ == "__main__":

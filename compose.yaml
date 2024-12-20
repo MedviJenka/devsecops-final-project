@@ -51,14 +51,14 @@ services:
       my-network:
         ipv4_address: ${TESTS_PRIVATE_IP}
     volumes:
-      - ${PWD}/allure-results:/tests/allure-results
-    depends_on:
-      - ai-server
-      - app-server
-      - jenkins
-      - nginx
-      - sonar_db
-      - sonarqube
+      - ./tests/logs/allure-results:/logs/allure-results
+#    depends_on:
+#      - ai-server
+#      - app-server
+#      - jenkins
+#      - nginx
+#      - sonar_db
+#      - sonarqube
 
   jenkins:
     image: jenkins/jenkins:latest
@@ -125,10 +125,12 @@ services:
     ports:
       - "${ALLURE_SERVER_PORT}:5050"
     volumes:
-      - ${PWD}/allure-results:/tests/allure-results
+      - ./tests/logs/allure-results:/tests/logs/allure-results
     networks:
       my-network:
         ipv4_address: ${ALLURE_SERVER_PRIVATE_IP}
+    depends_on:
+      - tests
 
   nginx:
     image: nginx:latest
