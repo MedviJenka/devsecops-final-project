@@ -4,7 +4,7 @@ services:
     image: ai-server-image
     build:
       context: .
-      dockerfile: /bot/Dockerfile
+      dockerfile: dockerfiles/ai-server.Dockerfile
       args:
         AI_PORT: ${AI_PORT}
         OPENAI_API_KEY: ${OPENAI_API_KEY}
@@ -26,7 +26,7 @@ services:
     image: app-server-image
     build:
       context: .
-      dockerfile: /app/Dockerfile
+      dockerfile: dockerfiles/app-server.Dockerfile
       args:
         APP_PORT: ${APP_PORT}
         HOST: ${HOST}
@@ -42,7 +42,7 @@ services:
   tests:
     image: tests-image
     build:
-      dockerfile: /tests/Dockerfile
+      dockerfile: dockerfiles/test-server.Dockerfile
     env_file:
       - .env
     ports:

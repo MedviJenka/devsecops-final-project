@@ -9,7 +9,7 @@ from core.executor import Executor
 @dataclass
 class ContainerAgent(Executor):
 
-    log_dir = "../containers/logs"
+    log_dir = "containers/logs"
     client = OpenAI(api_key=AppConfig.OPENAI_API_KEY)
 
     def send_logs_to_ai_agent(self, file_path) -> str:
@@ -30,12 +30,20 @@ class ContainerAgent(Executor):
         return content
 
     def summarize_logs(self) -> None:
+        """
+        :TODO:
+            ai-report folder and file
+        """
         for log_file in os.listdir(self.log_dir):
             log_path = os.path.join(self.log_dir, log_file)
+
             if os.path.isfile(log_path):
                 print(f"Summarizing log: {log_file}")
                 summary = self.send_logs_to_ai_agent(log_path)
                 print(f"Summary for {log_file}:\n{summary}\n")
+
+                with open('w', ) as file:
+                    ...
 
     def execute(self) -> None:
 
