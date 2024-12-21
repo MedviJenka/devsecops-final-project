@@ -38,7 +38,7 @@ def filter_logs_for_errors(log_lines):
     return [line for line in log_lines if error_pattern.search(line)]
 
 
-def main():
+def generate_container_logs():
 
     create_log_directory()
 
@@ -81,7 +81,3 @@ def main():
         print(f"Filtered logs saved to {filtered_log_file}")
 
     print(f"Log extraction complete. Check the {PATH} directory.")
-
-
-if __name__ == "__main__":
-    main()

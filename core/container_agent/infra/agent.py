@@ -42,24 +42,16 @@ class ContainerAgent(Executor):
                 summary = self.send_logs_to_ai_agent(log_path)
                 print(f"Summary for {log_file}:\n{summary}\n")
 
-                with open('w', encoding='utf-8') as file:
-                    ...
+                # Write summary to a report file
+                report_file = os.path.join(r'./containers/ai_report', f"{log_file}_summary.txt")
+                with open(report_file, 'w', encoding='utf-8') as file:
+                    file.write(summary)
+                print(f"Summary written to: {report_file}")
 
     def execute(self) -> None:
 
         try:
-            subprocess.run(
-                ["powershell", "-ExecutionPolicy", "Bypass", "-File", "generate_logs.ps1"],
-                capture_output=True,  # Capture output
-                text=True,  # Output as string
-                check=True  # Raise exception for non-zero exit codes
-            )
             self.summarize_logs()
         except subprocess.CalledProcessError as e:
             print("There are no running containers")
             print(e.stderr)
-
-
-if __name__ == '__main__':
-    c = ContainerAgent()
-    c.execute()
