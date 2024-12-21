@@ -18,6 +18,8 @@ services:
       timeout: 10s
       retries: 3
     restart: on-failure
+    volumes:
+      - mongodb_data:/opt/ai-server/data
     networks:
       my-network:
         ipv4_address: ${AI_SERVER_PRIVATE_IP}
@@ -52,13 +54,10 @@ services:
         ipv4_address: ${TESTS_PRIVATE_IP}
     volumes:
       - ./tests/logs/allure-results:/logs/allure-results
-#    depends_on:
-#      - ai-server
-#      - app-server
-#      - jenkins
-#      - nginx
-#      - sonar_db
-#      - sonarqube
+    depends_on:
+      - ai-server
+      - app-server
+      - jenkins
 
   jenkins:
     image: jenkins/jenkins:latest
@@ -79,43 +78,6 @@ services:
       my-network:
         ipv4_address: ${JENKINS_PRIVATE_IP}
 
-  sonarqube:
-    image: sonarqube:lts-community
-    environment:
-      SONAR_JDBC_URL: jdbc:postgresql://sonar_db:5432/sonar
-      SONAR_JDBC_USERNAME: sonar
-      SONAR_JDBC_PASSWORD: sonar
-    env_file:
-      - .env
-    ports:
-      - ${SONARQUBE_PORT}:9000
-    volumes:
-      - sonarqube_conf:/opt/sonarqube/conf
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_extensions:/opt/sonarqube/extensions
-      - sonarqube_logs:/opt/sonarqube/logs
-      - sonarqube_temp:/opt/sonarqube/temp
-    networks:
-      my-network:
-        ipv4_address: ${SONARQUBE_PRIVATE_IP}
-    depends_on:
-      - sonar_db
-
-  sonar_db:
-    image: postgres:13
-    environment:
-      POSTGRES_USER: sonar
-      POSTGRES_PASSWORD: sonar
-      POSTGRES_DB: sonar
-    ports:
-      - ${SONAR_DB_PORT}:${SONAR_DB_PORT}
-    volumes:
-      - sonar_db:/var/lib/postgresql
-      - sonar_db_data:/var/lib/postgresql/data
-    networks:
-      my-network:
-        ipv4_address: ${SONAR_DB_PRIVATE_IP}
-
   allure-server:
     image: "frankescobar/allure-docker-service"
     environment:
@@ -132,51 +94,40 @@ services:
     depends_on:
       - tests
 
-  nginx:
-    image: nginx:latest
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
     ports:
-      - ${NGINX_PORT}:80
+      - ${DB_PORT}:27017
     environment:
-      - AI_SERVER_PRIVATE_IP=${AI_SERVER_PRIVATE_IP}
-      - AI_PORT=${AI_PORT}
-      - APP_SERVER_PRIVATE_IP=${APP_SERVER_PRIVATE_IP}
-      - APP_PORT=${APP_PORT}
-      - VIRTUAL_HOST=${AI_SERVER_PRIVATE_IP}:${AI_PORT}
-
-    # TODO: update nginx.conf with working functionality
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
-      - ./infra/nginx.conf:/etc/nginx/nginx.conf
-      - ./infra/nginx.conf:/etc/nginx/conf.d/default.conf
+      - mongodb_data:/data/db
     networks:
       my-network:
-        ipv4_address: ${NGINX_PRIVATE_IP}
-    depends_on:
-      - ai-server
+        ipv4_address: ${DB_PRIVATE_IP}
 
-  nginx-proxy:
-    image: nginxproxy/nginx-proxy:1.6
-    ports:
-      - ${VIRTUAL_HOST_PORT}:${VIRTUAL_HOST_PORT}
+  redis:
+    image: redis:alpine
     volumes:
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - shared_tests:/health_checks
+    healthcheck:
+      test: /health_checks/redis.sh
+      interval: "5s"
+    networks:
+      - my-network
 
 networks:
   my-network:
-    driver: bridge
     ipam:
       config:
         - subnet: 192.168.1.0/24
 
 volumes:
-
-  # sonar DB
-  sonarqube_conf:
-  sonarqube_data:
-  sonarqube_extensions:
-  sonarqube_logs:
-  sonarqube_temp:
-  sonar_db:
-  sonar_db_data:
-
-  # shared folders
+  mongodb_conf:
+  mongodb_data:
+  mongodb_extensions:
+  mongodb_logs:
+  mongodb_temp:
   shared_tests:

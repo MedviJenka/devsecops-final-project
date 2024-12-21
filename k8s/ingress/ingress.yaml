@@ -14,4 +14,4 @@ spec:
           service:
             name: ai-server
             port:
-              number: ${AI_SERVER}
+              number: ${K8S_PORT}

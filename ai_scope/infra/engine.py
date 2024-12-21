@@ -42,7 +42,7 @@ class ContainerAgent(Executor):
                 summary = self.send_logs_to_ai_agent(log_path)
                 print(f"Summary for {log_file}:\n{summary}\n")
 
-                with open('w', ) as file:
+                with open('w', encoding='utf-8') as file:
                     ...
 
     def execute(self) -> None:
@@ -54,14 +54,12 @@ class ContainerAgent(Executor):
                 text=True,  # Output as string
                 check=True  # Raise exception for non-zero exit codes
             )
-
+            self.summarize_logs()
         except subprocess.CalledProcessError as e:
             print("There are no running containers")
             print(e.stderr)
 
-        finally:
-            self.summarize_logs()
 
-
-c = ContainerAgent()
-c.execute()
+if __name__ == '__main__':
+    c = ContainerAgent()
+    c.execute()
