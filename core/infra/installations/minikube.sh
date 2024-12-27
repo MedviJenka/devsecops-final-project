@@ -7,6 +7,10 @@ sudo apt-get install curl
 sudo apt-get install apt-transport-https
 sudo apt install virtualbox virtualbox-ext-pack
 
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+
+
 wget https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo cp minikube-linux-amd64 /usr/local/bin/minikube
 sudo chmod 755 /usr/local/bin/minikube
@@ -16,7 +20,6 @@ chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
 kubectl version -o json
 
-minikube start
 kubectl config view
 kubectl cluster-info
 kubectl get nodes
