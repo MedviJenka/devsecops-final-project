@@ -88,6 +88,8 @@ services:
       - "${ALLURE_SERVER_PORT}:5050"
     volumes:
       - ./tests/logs/allure-results:/tests/logs/allure-results
+      - ${PWD}/allure-results:/app/allure-results
+      - ${PWD}/allure-reports:/app/default-reports
     networks:
       my-network:
         ipv4_address: ${ALLURE_SERVER_PRIVATE_IP}
