@@ -6,5 +6,6 @@ COPY requirements.txt /app
 COPY .env /app
 RUN pip install --no-cache-dir -r requirements.txt
 COPY app ./app
+EXPOSE 88
 ENTRYPOINT ["python"]
 CMD ["/app/app/main.py"]
