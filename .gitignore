@@ -2,7 +2,7 @@
 /.venv
 /.idea
 /venv/
-/core/__pycache__/
+/app/core/__pycache__/
 /app/__pycache__/
-/core/container_agent/infra/containers/logs/
-/tests/logs/
+/scope/infra/containers/logs/
+/app/tests/logs/

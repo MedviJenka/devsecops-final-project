@@ -1,27 +1,52 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: openai-app
+  name: ai-agent-bot
   labels:
-    app: openai-app
+    app: ai-agent-bot
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: openai-app
+      app: ai-agent-bot
   template:
     metadata:
       labels:
-        app: openai-app
+        app: ai-agent-bot
     spec:
       containers:
-      - name: openai-container
+      - name: ai-agent-bot
         image: medvijenia/simple-app:1.0
+        ports:
+        - containerPort: 88
         env:
         - name: OPENAI_API_KEY
           valueFrom:
             secretKeyRef:
               name: openai-api-key
               key: OPENAI_API_KEY
-        ports:
-        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 88
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 88
+          initialDelaySeconds: 10
+          periodSeconds: 15
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-agent-bot-service
+spec:
+  selector:
+    app: ai-agent-bot
+  ports:
+    - protocol: TCP
+      port: 88
+      targetPort: 88
+  type: ClusterIP

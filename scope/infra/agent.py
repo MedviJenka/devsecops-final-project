@@ -1,9 +1,9 @@
 import os
 import subprocess
 from openai import OpenAI
-from core.config import AppConfig
+from app.core import AppConfig
 from dataclasses import dataclass
-from core.executor import Executor
+from app.core import Executor
 
 
 @dataclass
@@ -43,7 +43,7 @@ class ContainerAgent(Executor):
                 print(f"Summary for {log_file}:\n{summary}\n")
 
                 # Write summary to a report file
-                report_file = os.path.join(r'./containers/ai_report', f"{log_file}_summary.txt")
+                report_file = os.path.join(r'containers/ai_report', f"{log_file}_summary.txt")
                 with open(report_file, 'w', encoding='utf-8') as file:
                     file.write(summary)
                 print(f"Summary written to: {report_file}")

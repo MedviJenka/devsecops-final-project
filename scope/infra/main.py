@@ -1,5 +1,5 @@
-from core.container_agent.infra.agent import ContainerAgent
-from core.container_agent.infra.logs import generate_container_logs
+from scope.infra.agent import ContainerAgent
+from scope.infra.logs import generate_container_logs
 
 
 if __name__ == '__main__':

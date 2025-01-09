@@ -1,6 +1,6 @@
+import os
 from openai import OpenAI
-from bot.prompts import PROMPT
-from core.config import AppConfig
+from app.bot.prompts import PROMPT
 from dataclasses import dataclass
 
 
@@ -11,7 +11,12 @@ class AIAgent:
     send an openai request to the sever
     """
 
-    client = OpenAI(api_key=AppConfig.OPENAI_API_KEY)
+    api_key: str = os.getenv('OPENAI_API_KEY')
+
+    def __post_init__(self) -> None:
+        if not self.api_key:
+            raise ValueError("OPENAI_API_KEY is not set in the environment variables.")
+        self.client = OpenAI(api_key=self.api_key)
 
     def set_ai(self, user_input: str) -> str:
         response = self.client.chat.completions.create(
