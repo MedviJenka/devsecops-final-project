@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: ai-server-config
-  namespace: my-namespace
-data:
-  AI_PORT: ${AI_PORT}
-  OPENAI_API_KEY: ${OPENAI_API_KEY}
