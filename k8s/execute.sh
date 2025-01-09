@@ -1,6 +1,7 @@
 #!/bin/bash
 minikube start
 minikube enable addons ingress
+kubectl create secret generic openai-api-key --from-literal=OPENAI_API_KEY=""
 
 MINIKUBE_IP=$(minikube ip)
 ENTRY="$MINIKUBE_IP ai-bot.local.com"
