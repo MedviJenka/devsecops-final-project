@@ -1,6 +1,6 @@
 #!/bin/bash
 minikube start
-minikube enable addons ingress
+minikube addons enable ingress
 kubectl create secret generic openai-api-key --from-literal=OPENAI_API_KEY=""
 
 MINIKUBE_IP=$(minikube ip)
