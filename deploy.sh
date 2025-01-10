@@ -14,5 +14,5 @@ else
 fi
 grep -qxF "$(minikube ip) ai-bot.local.com" /etc/hosts || echo "$(minikube ip) ai-bot.local.com" | sudo tee -a /etc/hosts
 
-kubectl k8s/apply -f .
+kubectl apply -f k8s/.
 curl http://ai-bot.local.com/health
