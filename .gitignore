@@ -7,3 +7,4 @@
 /scope/infra/containers/logs/
 /app/tests/logs/
 /k8s/configmap.yaml
+/push_image.ps1
