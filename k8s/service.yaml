@@ -11,9 +11,11 @@ spec:
       targetPort: 89
   selector:
     io.kompose.service: frontend
+
 ---
-apiVersion: v1
+
 kind: Service
+apiVersion: v1
 metadata:
   labels:
     io.kompose.service: backend

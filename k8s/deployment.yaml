@@ -21,21 +21,6 @@ spec:
                 secretKeyRef:
                   name: secret
                   key: OPENAI_API_KEY
-            - name: BACKEND_IP
-              valueFrom:
-                configMapKeyRef:
-                  key: BACKEND_IP
-                  name: env
-            - name: FRONTEND_IP
-              valueFrom:
-                configMapKeyRef:
-                  key: FRONTEND_IP
-                  name: env
-            - name: SUBNET_IP
-              valueFrom:
-                configMapKeyRef:
-                  key: SUBNET_IP
-                  name: env
           image: medvijenia/app-backend:latest
           name: backend
           ports:
