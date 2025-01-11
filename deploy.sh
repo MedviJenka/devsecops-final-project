@@ -2,10 +2,10 @@
 
 minikube start
 minikube addons enable ingress
-kubectl create secret generic openai-api-key --from-literal=OPENAI_API_KEY=""
+#kubectl create secret generic openai-api-key --from-literal=OPENAI_API_KEY=""
 
 MINIKUBE_IP=$(minikube ip)
-ENTRY="$MINIKUBE_IP bot.k8s.com"
+ENTRY="$MINIKUBE_IP app.k8s.com"
 
 if ! grep -qxF "$ENTRY" /etc/hosts; then
   echo "$ENTRY" | sudo tee -a /etc/hosts
@@ -14,8 +14,10 @@ else
   echo "Entry already exists: $ENTRY"
 fi
 
-grep -qxF "$(minikube ip) bot.k8s.com" /etc/hosts || echo "$(minikube ip) bot.k8s.com" | sudo tee -a /etc/hosts
+grep -qxF "$(minikube ip) app.k8s.com" /etc/hosts || echo "$(minikube ip) app.k8s.com" | sudo tee -a /etc/hosts
 
 kubectl apply -f k8s/.
 
-curl http://bot.k8s.com/health
+sleep 60
+
+curl http://app.k8s.com/health
