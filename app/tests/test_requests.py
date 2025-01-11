@@ -1,3 +1,6 @@
+import debugpy
+
+
 class TestContainers:
 
     """
@@ -6,3 +9,6 @@ class TestContainers:
 
     def test_sanity(self) -> None:
         assert 1 + 1 == 2
+
+    def test_network(self) -> None:
+        debugpy.listen(('0.0.0.0', 89))

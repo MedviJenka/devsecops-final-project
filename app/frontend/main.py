@@ -35,4 +35,4 @@ def chat() -> str:
 
 
 if __name__ == '__main__':
-    app.run(host=AppConfig.HOST, port=PortConfig.APP_PORT, debug=AppConfig.DEBUG)
+    app.run(host=AppConfig.HOST, port=PortConfig.FRONTEND_PORT, debug=AppConfig.DEBUG)

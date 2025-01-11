@@ -1,11 +1,11 @@
 import requests
-from app.core.config import PortConfig
+from app.core.config import PortConfig, PrivateIPConfig
 
 
 class RequestManager:
 
     def __init__(self) -> None:
-        self.url = f"http://localhost:{PortConfig.AI_PORT}/roast"
+        self.url = f"http://{PrivateIPConfig.BACKEND_IP}:{PortConfig.BACKEND_PORT}/roast"
 
     def request_handler(self, input_text: str):
         headers = {"Content-Type": "application/json"}

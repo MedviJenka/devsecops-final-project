@@ -1,13 +1,27 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    io.kompose.service: frontend
+  name: frontend
+spec:
+  ports:
+    - name: "89"
+      port: 89
+      targetPort: 89
+  selector:
+    io.kompose.service: frontend
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: ai-agent-backend-service
+  labels:
+    io.kompose.service: backend
+  name: backend
 spec:
-  selector:
-    app: ai-agent-backend
   ports:
-    - protocol: TCP
+    - name: "88"
       port: 88
       targetPort: 88
-      nodePort: 30000
-  type: LoadBalancer
+  selector:
+    io.kompose.service: backend

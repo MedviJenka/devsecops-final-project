@@ -1,3 +1,4 @@
+import os
 from app.backend.ai import Agent
 from flask import Flask, request, jsonify
 from app.core.config import AppConfig, PortConfig
@@ -9,7 +10,10 @@ app = Flask(__name__)
 
 @app.route(rule='/')
 def landing_page() -> jsonify:
-    return jsonify({"message": "server is up"}), 200
+    return jsonify({
+        "message": "server is up",
+        "api_key": 'success' if os.getenv('OPENAI_API_KEY') else 'no api key is set'
+    }), 200
 
 
 @app.route('/health', methods=['GET'])
@@ -37,4 +41,4 @@ def main() -> tuple:
 
 
 if __name__ == '__main__':
-    app.run(host=AppConfig.HOST, port=PortConfig.AI_PORT, debug=AppConfig.DEBUG)
+    app.run(host=AppConfig.HOST, port=PortConfig.BACKEND_PORT, debug=AppConfig.DEBUG)

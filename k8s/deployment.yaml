@@ -1,52 +1,70 @@
-apiVersion: apps/v1
 kind: Deployment
+apiVersion: apps/v1
 metadata:
-  name: ai-agent-backend
   labels:
-    app: ai-agent-backend
+    io.kompose.service: backend
+  name: backend
 spec:
-  replicas: 10
+  replicas: 5
   selector:
     matchLabels:
-      app: ai-agent-backend
+      io.kompose.service: backend
   template:
     metadata:
       labels:
-        app: ai-agent-backend
+        io.kompose.service: backend
     spec:
       containers:
-      - name: ai-agent-backend
-        image: medvijenia/simple-frontend:1.0
-        ports:
-        - containerPort: 88
-        env:
-        - name: OPENAI_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: openai-api-key
-              key: OPENAI_API_KEY
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 88
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 88
-          initialDelaySeconds: 10
-          periodSeconds: 15
+        - env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: OPENAI_API_KEY
+            - name: BACKEND_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: BACKEND_IP
+                  name: env
+            - name: FRONTEND_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: FRONTEND_IP
+                  name: env
+            - name: SUBNET_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: SUBNET_IP
+                  name: env
+          image: medvijenia/app-backend:latest
+          name: backend
+          ports:
+            - containerPort: 88
+              protocol: TCP
+      restartPolicy: Always
+
 ---
-apiVersion: v1
-kind: Service
+
+kind: Deployment
+apiVersion: apps/v1
 metadata:
-  name: ai-agent-backend-service
+  labels:
+    io.kompose.service: frontend
+  name: frontend
 spec:
+  replicas: 5
   selector:
-    app: ai-agent-backend
-  ports:
-    - protocol: TCP
-      port: 88
-      targetPort: 88
-  type: ClusterIP
+    matchLabels:
+      io.kompose.service: frontend
+  template:
+    metadata:
+      labels:
+        io.kompose.service: frontend
+    spec:
+      containers:
+        - image: medvijenia/app-frontend:latest
+          name: frontend
+          ports:
+            - containerPort: 89
+              protocol: TCP
+      restartPolicy: Always
