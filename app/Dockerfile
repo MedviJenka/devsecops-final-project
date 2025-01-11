@@ -1,12 +1,23 @@
-ARG version=3.12-slim
-FROM python:$version
-LABEL author="jenia petrusenko" description="DevSecOps Python project" version="1.0"
+ARG version=3.12-alpine
+FROM python:$version AS base
 WORKDIR /app
 ENV PYTHONPATH=/app
-COPY ../requirements.txt /app
-COPY ../.env /app
+COPY ../requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY core ./core
-COPY /app ./app
+COPY . .
+
+FROM base AS frontend
+WORKDIR /app/frontend
+COPY /app/frontend .
+EXPOSE 89
 ENTRYPOINT ["python"]
-CMD ["/app/app/main.py"]
+CMD ["main.py"]
+
+FROM base AS backend
+ARG OPENAI_API_KEY
+ENV OPENAI_API_KEY=${OPENAI_API_KEY}
+WORKDIR /app/backend
+COPY /app/backend .
+EXPOSE 88
+ENTRYPOINT ["python"]
+CMD ["server.py"]

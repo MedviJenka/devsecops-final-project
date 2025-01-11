@@ -1,7 +1,19 @@
 services:
-  test:
+
+  frontend:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: app/Dockerfile
+      target: frontend
+    ports:
+      - 89:89
+
+  backend:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+      target: backend
     ports:
       - 88:88
+    env_file:
+      - .env

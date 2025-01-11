@@ -1,8 +1,4 @@
 import os
-from dotenv import load_dotenv
-
-
-load_dotenv()
 
 
 class AppConfig:
@@ -12,4 +8,5 @@ class AppConfig:
 
 
 class PortConfig:
-    APP_PORT = 88
+    AI_PORT = 88
+    APP_PORT = 89

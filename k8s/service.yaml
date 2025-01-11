@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ai-agent-bot-service
+  name: ai-agent-backend-service
 spec:
   selector:
-    app: ai-agent-bot
+    app: ai-agent-backend
   ports:
     - protocol: TCP
       port: 88

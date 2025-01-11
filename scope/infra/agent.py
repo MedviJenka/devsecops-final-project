@@ -1,9 +1,9 @@
 import os
 import subprocess
 from openai import OpenAI
-from app.core import AppConfig
 from dataclasses import dataclass
-from app.core import Executor
+from app.core.config import AppConfig
+from app.core.executor import Executor
 
 
 @dataclass

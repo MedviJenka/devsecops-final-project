@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ai-agent-bot
+  name: ai-agent-backend
   labels:
-    app: ai-agent-bot
+    app: ai-agent-backend
 spec:
   replicas: 10
   selector:
     matchLabels:
-      app: ai-agent-bot
+      app: ai-agent-backend
   template:
     metadata:
       labels:
-        app: ai-agent-bot
+        app: ai-agent-backend
     spec:
       containers:
-      - name: ai-agent-bot
-        image: medvijenia/simple-app:1.0
+      - name: ai-agent-backend
+        image: medvijenia/simple-frontend:1.0
         ports:
         - containerPort: 88
         env:
@@ -41,10 +41,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ai-agent-bot-service
+  name: ai-agent-backend-service
 spec:
   selector:
-    app: ai-agent-bot
+    app: ai-agent-backend
   ports:
     - protocol: TCP
       port: 88
