@@ -10,7 +10,7 @@ spec:
       port: 89
       targetPort: 89
   selector:
-    io.kompose.service: frontend
+    service: frontend
 
 ---
 
@@ -26,4 +26,4 @@ spec:
       port: 88
       targetPort: 88
   selector:
-    io.kompose.service: backend
+    service: backend

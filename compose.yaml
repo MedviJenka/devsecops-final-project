@@ -5,6 +5,8 @@ services:
       context: .
       dockerfile: app/Dockerfile
       target: frontend
+    env_file:
+      - .env
     ports:
       - "89:89"
     networks:
@@ -26,9 +28,28 @@ services:
       my-network:
         ipv4_address: ${BACKEND_IP}
 
+  jenkins:
+    image: jenkins/jenkins:latest
+    user: root
+    ports:
+      - "${JENKINS_PORT}:8080"
+    env_file:
+      - .env
+    networks:
+      my-network:
+        ipv4_address: ${JENKINS_IP}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins-data:/var/jenkins_home
+
+
 networks:
   my-network:
     driver: bridge
     ipam:
       config:
         - subnet: ${SUBNET_IP}
+
+
+volumes:
+  jenkins-data:

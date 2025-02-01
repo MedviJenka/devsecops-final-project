@@ -8,7 +8,7 @@ from app.core.config import AppConfig
 class Agent:
 
     """
-    send an openai request to the sever
+    send an openai request to the server
     """
 
     client = OpenAI(api_key=AppConfig.OPENAI_API_KEY)

@@ -3,6 +3,7 @@ FROM python:$version AS base
 WORKDIR /app
 ENV PYTHONPATH=/app
 COPY ../requirements.txt .
+COPY ../. .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 COPY ../.env .
@@ -20,3 +21,5 @@ WORKDIR /app/backend
 COPY /app/backend .
 ENTRYPOINT ["python"]
 CMD ["server.py"]
+
+FROM base AS jenkins

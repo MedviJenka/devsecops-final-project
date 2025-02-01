@@ -1,41 +1,43 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  labels:
-    io.kompose.service: backend
   name: backend
+  namespace: default
+  labels:
+    app.kubernetes.io/name: backend
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: my-app
+    meta.helm.sh/release-namespace: default
 spec:
-  replicas: 3
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      io.kompose.service: backend
+      app: backend
   template:
     metadata:
       labels:
-        io.kompose.service: backend
+        app: backend
     spec:
       containers:
-        - env:
-            - name: OPENAI_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: secret
-                  key: OPENAI_API_KEY
-          image: medvijenia/app-backend:latest
-          name: backend
+        - name: backend
+          image: {{ .Values.image.backend }}
           ports:
             - containerPort: 88
-              protocol: TCP
-      restartPolicy: Always
 
 ---
 
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  labels:
-    io.kompose.service: frontend
   name: frontend
+  namespace: default
+  labels:
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: my-app
+    meta.helm.sh/release-namespace: default
 spec:
   replicas: 3
   selector:
