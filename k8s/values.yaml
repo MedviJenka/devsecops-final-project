@@ -1,62 +1,13 @@
 apiVersion: v2
-name: my-flask-app
+appName: my-app
 version: 1.0.0
+namespace: default
 description: A Helm chart for deploying a Flask application with best practices
 
 maintainers:
   - name: DevOps Team
 
-dependencies:
-  - name: nginx-ingress
-    version: "^1.41.3"
-    repository: "https://charts.bitnami.com/bitnami"
-
 replicaCount: 3
-
-image:
-  backend: "medvijenia/app-backend:latest"
-  frontend: "medvijenia/app-frontend:latest"
-  jenkins: "jenkins/jenkins:latest"
-
-service:
-  backend:
-    type: ClusterIP
-    port: 88
-  frontend:
-    type: ClusterIP
-    port: 89
-  jenkins:
-    type: ClusterIP
-    port: 90
-
-ingress:
-  enabled: true
-  host: app.k8s.com
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-
-hpa:
-  enabled: true
-  minReplicas: 3
-  maxReplicas: 10
-  cpuUtilization: 50
-
-resources:
-  limits:
-    cpu: "500m"
-    memory: "512Mi"
-  requests:
-    cpu: "250m"
-    memory: "256Mi"
-
-env:
-  BACKEND_IP: "192.168.1.101"
-  FRONTEND_IP: "192.168.1.100"
-  JENKINS_IP: "192.168.1.102"
-  SUBNET_IP: "192.168.1.0/24"
-
-secrets:
-  OPENAI_API_KEY: "your-base64-encoded-key"
 
 logging:
   enabled: true

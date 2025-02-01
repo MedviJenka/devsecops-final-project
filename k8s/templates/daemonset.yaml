@@ -1,6 +1,7 @@
 kind: DaemonSet
 apiVersion: apps/v1
 metadata:
+  namespace: {{ .Values.namespace }}
   name: fluentd
   labels:
     app: fluentd
