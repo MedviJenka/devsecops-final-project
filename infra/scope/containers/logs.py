@@ -3,7 +3,7 @@ import re
 import subprocess
 
 
-PATH = r'containers/logs/'
+PATH = r'logs/'
 
 
 def create_log_directory():

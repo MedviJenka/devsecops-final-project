@@ -1,7 +1,8 @@
+{{- if .Values.daemonset.enabled }}
 kind: DaemonSet
 apiVersion: apps/v1
 metadata:
-  namespace: {{ .Values.namespace }}
+  namespace: default
   name: fluentd
   labels:
     app: fluentd
@@ -30,3 +31,4 @@ spec:
       - name: dockercontainers
         hostPath:
           path: /var/lib/docker/containers
+{{- end }}

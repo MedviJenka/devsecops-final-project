@@ -9,7 +9,7 @@ from app.core.executor import Executor
 @dataclass
 class ContainerAgent(Executor):
 
-    log_dir = "containers/logs"
+    log_dir = "logs"
     client = OpenAI(api_key=AppConfig.OPENAI_API_KEY)
 
     def send_logs_to_ai_agent(self, file_path) -> str:
@@ -43,7 +43,7 @@ class ContainerAgent(Executor):
                 print(f"Summary for {log_file}:\n{summary}\n")
 
                 # Write summary to a report file
-                report_file = os.path.join(r'containers/ai_report', f"{log_file}_summary.txt")
+                report_file = os.path.join(r'ai_report', f"{log_file}_summary.txt")
                 with open(report_file, 'w', encoding='utf-8') as file:
                     file.write(summary)
                 print(f"Summary written to: {report_file}")

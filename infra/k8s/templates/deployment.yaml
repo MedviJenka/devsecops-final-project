@@ -2,7 +2,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: backend
-  namespace: {{ .Values.namespace }}
+  namespace: default
   labels:
     app.kubernetes.io/name: backend
     app.kubernetes.io/managed-by: Helm
@@ -21,9 +21,12 @@ spec:
     spec:
       containers:
         - name: backend
-          image: {{ .Values.image.backend }}
+          image: {{ .Values.images.backend }}
           ports:
             - containerPort: 88
+          env:
+            - name: BACKEND_URL
+              value: "http://backend:88/roast"
 
 ---
 
@@ -31,7 +34,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: frontend
-  namespace: {{ .Values.namespace }}
+  namespace: default
   labels:
     app.kubernetes.io/name: frontend
     app.kubernetes.io/managed-by: Helm
@@ -39,7 +42,7 @@ metadata:
     meta.helm.sh/release-name: {{ .Values.appName }}
     meta.helm.sh/release-namespace: default
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 3
   selector:
     matchLabels:
       io.kompose.service: frontend
@@ -49,7 +52,7 @@ spec:
         io.kompose.service: frontend
     spec:
       containers:
-        - image: medvijenia/app-frontend:latest
+        - image: {{ .Values.images.frontend }}
           name: frontend
           ports:
             - containerPort: 89
