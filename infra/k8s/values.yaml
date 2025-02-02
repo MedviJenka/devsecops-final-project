@@ -1,20 +1,17 @@
 # cd /infra
 # helm install app /k8s -f k8s/values.yaml
 
-
-apiVersion: v2
-appName: my-app
-version: 1.0.0
-namespace: default
-description: A Helm chart for deploying a Flask application with best practices
-replicaCount: 3
+replicaCount: 10
 
 logging:
+  enabled: true
+
+ingress:
   enabled: true
 
 daemonset:
   enabled: true
 
 image:
-  frontend: medvijenia/app-frontend:latest
-  backend: medvijenia/app-backend:latest
+  frontend: medvijenia/app-frontend
+  backend: medvijenia/app-backend

@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
 
   frontend:
@@ -7,11 +9,14 @@ services:
       target: frontend
     env_file:
       - .env
+    environment:
+      - BACKEND_URL=http://backend:88/roast  # Use service name instead of static IP
     ports:
       - "89:89"
+    depends_on:
+      - backend  # Ensure backend starts before frontend
     networks:
-      my-network:
-        ipv4_address: ${FRONTEND_IP}
+      - my-network
 
   backend:
     build:
@@ -20,36 +25,32 @@ services:
       target: backend
       args:
         OPENAI_API_KEY: ${OPENAI_API_KEY}
-    ports:
-      - "88:88"
     env_file:
       - .env
+#    environment:
+#      - BACKEND_URL=http://backend:88/roast
+    ports:
+      - "88:88"  # Expose backend port
     networks:
-      my-network:
-        ipv4_address: ${BACKEND_IP}
+      - my-network
 
+#   Jenkins service (commented out for now, can be enabled later)
   jenkins:
-    image: jenkins/jenkins:latest
-    user: root
-    ports:
-      - "${JENKINS_PORT}:8080"
-    env_file:
-      - .env
-    networks:
-      my-network:
-        ipv4_address: ${JENKINS_IP}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - jenkins-data:/var/jenkins_home
-
+     image: jenkins/jenkins:latest
+     user: root
+     ports:
+       - "${JENKINS_PORT}:8080"
+     env_file:
+       - .env
+     networks:
+       - my-network
+     volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
+       - jenkins-data:/var/jenkins_home
 
 networks:
   my-network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: ${SUBNET_IP}
-
 
 volumes:
   jenkins-data:

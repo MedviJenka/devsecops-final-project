@@ -4,6 +4,6 @@
 /venv/
 /app/core/__pycache__/
 /app/__pycache__/
-/infra/scope/infra/containers/logs/
+/infra/scope/containers/logs/
 /app/tests/logs/
 /push_image.ps1

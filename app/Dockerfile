@@ -11,6 +11,7 @@ COPY ../.env .
 FROM base AS frontend
 WORKDIR /app/frontend
 COPY /app/frontend .
+EXPOSE 89
 ENTRYPOINT ["python"]
 CMD ["main.py"]
 
@@ -19,7 +20,6 @@ ARG OPENAI_API_KEY
 ENV OPENAI_API_KEY=${OPENAI_API_KEY}
 WORKDIR /app/backend
 COPY /app/backend .
+EXPOSE 88
 ENTRYPOINT ["python"]
 CMD ["server.py"]
-
-FROM base AS jenkins
