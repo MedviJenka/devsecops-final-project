@@ -2,9 +2,10 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: backend
-  namespace: default
+  namespace: {{ .Values.NAMESPACE }}
   selector:
-    matchLabels: backend
+    matchLabels:
+      app: backend
 
 spec:
   replicas: {{ .Values.replicaCount }}
@@ -31,7 +32,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: frontend
-  namespace: default
+  namespace: {{ .Values.namespace }}
   selector:
     matchLabels:
       app: frontend
@@ -39,11 +40,11 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      io.kompose.service: frontend
+      app: frontend
   template:
     metadata:
       labels:
-        io.kompose.service: frontend
+        app: frontend
     spec:
       containers:
         - image: {{ .Values.image.frontend }}

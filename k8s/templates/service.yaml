@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: default
+  namespace: {{ .Values.NAMESPACE }}
   name: frontend
   labels:
     app: frontend
