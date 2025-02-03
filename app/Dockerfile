@@ -1,5 +1,7 @@
-ARG version=3.12-alpine
-FROM python:$version AS base
+ARG python_version=3.12-alpine
+ARG ubuntu_version=latest
+
+FROM python:$python_version AS base
 WORKDIR /app
 ENV PYTHONPATH=/app
 COPY ../requirements.txt .
@@ -23,3 +25,11 @@ COPY /app/backend .
 EXPOSE 88
 ENTRYPOINT ["python"]
 CMD ["server.py"]
+
+FROM selenium/standalone-chrome AS tests
+WORKDIR /tests
+COPY /tests .
+COPY ../requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+ENTRYPOINT ["python"]
+CMD ["pytest"]

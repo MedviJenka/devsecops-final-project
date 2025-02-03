@@ -48,6 +48,17 @@ services:
        - /var/run/docker.sock:/var/run/docker.sock
        - jenkins-data:/var/jenkins_home
 
+  tests:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+      target: tests
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    networks:
+      - my-network
+
 networks:
   my-network:
     driver: bridge
