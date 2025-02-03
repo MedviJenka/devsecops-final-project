@@ -1,6 +1,8 @@
 # cd /infra
 # helm install app /k8s -f k8s/values.yaml
 NAMESPACE: default
+APP_NAME: devops
+
 replicaCount: 5
 
 logging:

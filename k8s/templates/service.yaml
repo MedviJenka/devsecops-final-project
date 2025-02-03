@@ -8,7 +8,7 @@ metadata:
 spec:
   ports:
     - port: 89
-      targetPort: 88
+      targetPort: 89
       protocol: TCP
   selector:
     service: frontend
@@ -24,6 +24,7 @@ metadata:
 spec:
   ports:
     - port: 88
+      targetPort: 88
       protocol: TCP
   selector:
     service: backend
