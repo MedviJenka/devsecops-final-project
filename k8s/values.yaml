@@ -1,6 +1,6 @@
 # cd /infra
 # helm install app /k8s -f k8s/values.yaml
-NAMESPACE: k8s
+NAMESPACE: default
 replicaCount: 5
 
 logging:
@@ -13,5 +13,5 @@ daemonset:
   enabled: true
 
 image:
-  frontend: medvijenia/app-frontend
-  backend: medvijenia/app-backend
+  frontend: medvijenia/app-frontend:latest
+  backend: medvijenia/app-backend:latest

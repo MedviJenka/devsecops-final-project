@@ -1,1 +1,0 @@
-The error log indicates that Jenkins is being executed from the file located at `/usr/share/jenkins/jenkins.war`, and it is using the webroot directory located at `/var/jenkins_home/war`. However, the log does not contain any specific error messages or details about issues. It simply states the paths related to the Jenkins execution environment.
