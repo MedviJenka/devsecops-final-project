@@ -1,7 +1,7 @@
 # cd /infra
 # helm install app /k8s -f k8s/values.yaml
-
-replicaCount: 10
+NAMESPACE: k8s
+replicaCount: 5
 
 logging:
   enabled: true

@@ -1,7 +1,7 @@
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  namespace: default
+  namespace: {{ .Values.NAMESPACE }}
   name: backend-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
