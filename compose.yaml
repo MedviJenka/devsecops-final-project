@@ -7,8 +7,8 @@ services:
       context: .
       dockerfile: app/Dockerfile
       target: frontend
-    env_file:
-      - .env
+#    env_file:
+#      - .env
     environment:
       - BACKEND_URL=http://backend:88/roast  # Use service name instead of static IP
     ports:
