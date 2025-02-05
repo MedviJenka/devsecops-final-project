@@ -1,19 +1,28 @@
 import pytest
 from selenium import webdriver
 from selenium.common import TimeoutException
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7b6ffe2 (tests)
 from tests.manager import DriverManager
 from selenium.webdriver.common.by import By
 
 
 @pytest.fixture(scope='session')
 def driver() -> webdriver:
+<<<<<<< HEAD
     manager = DriverManager(headless=True)
+=======
+    manager = DriverManager()
+>>>>>>> 7b6ffe2 (tests)
     manager.open_url('http://localhost:89')
     return manager
 
 
 class TestFrontend:
 
+<<<<<<< HEAD
     """these tests test the main application functionality and also the BE in parallel"""
 
     def test_click_on_button_with_no_text_raise_popup(self, driver) -> None:
@@ -21,6 +30,8 @@ class TestFrontend:
         with pytest.raises(TimeoutException):
             driver.get_element(by=By.XPATH, element_name='/html/body/div/div')
 
+=======
+>>>>>>> 7b6ffe2 (tests)
     def test_main_screen(self, driver) -> None:
         result = driver.get_element(by=By.XPATH, element_name='/html/body/div/h1').text
         assert 'Roast Bot' in result
@@ -34,3 +45,11 @@ class TestFrontend:
         driver.get_element(by=By.XPATH, element_name='/html/body/div/form/button').click()
         result = driver.get_element(by=By.XPATH, element_name='/html/body/div/div').text
         assert 'AI:' in result
+<<<<<<< HEAD
+=======
+
+    def test_click_on_button_with_no_text_raise_popup(self, driver) -> None:
+        driver.get_element(by=By.XPATH, element_name='/html/body/div/form/button').click()
+        with pytest.raises(TimeoutException):
+            driver.get_element(by=By.XPATH, element_name='/html/body/div/div')
+>>>>>>> 7b6ffe2 (tests)
