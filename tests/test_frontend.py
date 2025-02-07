@@ -3,6 +3,10 @@ from selenium import webdriver
 from selenium.common import TimeoutException
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7b6ffe2 (tests)
 =======
 
 >>>>>>> 7b6ffe2 (tests)
@@ -17,7 +21,11 @@ from selenium.webdriver.common.by import By
 def driver() -> webdriver:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     manager = DriverManager(headless=True)
+=======
+    manager = DriverManager()
+>>>>>>> 7b6ffe2 (tests)
 =======
     manager = DriverManager()
 >>>>>>> 7b6ffe2 (tests)
@@ -32,6 +40,7 @@ class TestFrontend:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     """these tests test the main application functionality and also the BE in parallel"""
 
     def test_click_on_button_with_no_text_raise_popup(self, driver) -> None:
@@ -39,6 +48,8 @@ class TestFrontend:
         with pytest.raises(TimeoutException):
             driver.get_element(by=By.XPATH, element_name='/html/body/div/div')
 
+=======
+>>>>>>> 7b6ffe2 (tests)
 =======
 >>>>>>> 7b6ffe2 (tests)
 =======
@@ -58,7 +69,10 @@ class TestFrontend:
         assert 'AI:' in result
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 7b6ffe2 (tests)
 =======
 >>>>>>> 7b6ffe2 (tests)
 
@@ -67,6 +81,9 @@ class TestFrontend:
         with pytest.raises(TimeoutException):
             driver.get_element(by=By.XPATH, element_name='/html/body/div/div')
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 7b6ffe2 (tests)
+=======
 >>>>>>> 7b6ffe2 (tests)
 =======
 >>>>>>> 7b6ffe2 (tests)

@@ -1,6 +1,7 @@
 from selenium import webdriver
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
@@ -21,6 +22,8 @@ class DriverManager:
 =======
 =======
 >>>>>>> 7b6ffe2 (tests)
+=======
+>>>>>>> 7b6ffe2 (tests)
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -30,6 +33,9 @@ class DriverManager:
     def __init__(self) -> None:
         self.driver = webdriver.Chrome()
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 7b6ffe2 (tests)
+=======
 >>>>>>> 7b6ffe2 (tests)
 =======
 >>>>>>> 7b6ffe2 (tests)
@@ -39,9 +45,12 @@ class DriverManager:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     def get_element(self, by: str, element_name: str) -> WebElement:
         return WebDriverWait(self.driver, timeout=5).until(EC.presence_of_element_located((by, element_name)))
 =======
+=======
+>>>>>>> 7b6ffe2 (tests)
 =======
 >>>>>>> 7b6ffe2 (tests)
     def get_element(self, by: str, element_name: str):
@@ -49,6 +58,9 @@ class DriverManager:
             EC.presence_of_element_located((by, element_name))
         )
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 7b6ffe2 (tests)
+=======
 >>>>>>> 7b6ffe2 (tests)
 =======
 >>>>>>> 7b6ffe2 (tests)
